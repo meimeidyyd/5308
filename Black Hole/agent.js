@@ -113,7 +113,10 @@ function Agent(p, Id, d)
             {
                 this.radius = 0;
                 this.vanish = true;
-                done++;
+                if (algorithm != '3')
+                {
+                    done++;
+                }
             }
             this.x = p.x;
             this.y = p.y;

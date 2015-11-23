@@ -5,6 +5,7 @@ function init()
     n      = nodes.length;
     U      = [];
     done   = 0;
+    unexplored  = n - 1;
     consoleCount  = 0;
     gatherCount = 0;
     E      = [[0, 0], [0, 0]];
@@ -60,7 +61,7 @@ function initDevide()
     var max = n - 1;
     nodeV.left = left;
     nodeV.right = right;
-    console('U1 left =' + left +'...' + max + '  ,  U1 right = 1...' + right, 6);
+    getSegments(0);
     for (var i = 0; i < k; i++) 
     {
         var a = new Agent(nodes[0], i + 1, i ? 1 : -1);
@@ -85,10 +86,7 @@ function initOptTime()
 
 function initTradeOff()
 {
-    unexplored  = n - 1;
-    left = 0;
-    right = 0;
-    getSegments();
+    getSegments(0);
     for (var i = 0; i < k; i++) 
     {
         var a = new Agent(nodes[0], i + 1, i ? 1 : -1);

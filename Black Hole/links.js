@@ -70,60 +70,93 @@ function getLinks(a)
 
 function getSegmentSize()
 {
-    
     var a = k - 2;
     var sizeOfS = [];
     var s = 0;
+    var u = unexplored;
+    
+    
+    if (algorithm === '1')
+    {
+        s = Math.floor((unexplored + 1 )/ 2);
+        u -= s;
+        sizeOfS.push(s);
+        sizeOfS.push(u);
+    }
     // if number of agents alive > size of unexplored area, some of agents will not move 
-    if (a > unexplored){
+    else if (a > u){
         for (var i = 0; i < a; i++)
         {
-            s = i < unexplored ? 1 : 0;
-            sizeOfS.push(s)    
+            s = i < u ? 1 : 0;
+            sizeOfS.push(s);    
         }
     }else
     {
     // devide into segements of almost equal size
         for (var i = 0; i < a; i++)
         {
-            s = Math.floor(unexplored / (a - i));
-            unexplored -= s;
+            s = Math.floor(u / (a - i));
+            u -= s;
             sizeOfS.push(s)
         }
+        
     }
     return sizeOfS;
 }
 
 
-function getSegments()
+function getSegments(left)
 {
     var sizeOfS = getSegmentSize();
     S = [];
     var a = k - 2;
+    if (algorithm === '1')
+    {
+        a = 2;
+    }
     var l,r;
+    consoleCount++;
     for (var i = 0; i < a; i++)
     { 
-        if (!sizeOfS[i])
-        {
-            break;
-        }
         if (i)
         {
             l = S[i - 1][1] + 1; 
             r = S[i - 1][1] + sizeOfS[i];
         }else{
-            r = left + sizeOfS[0];
             l = left + 1;
+            r = left + sizeOfS[0];
         }
         S.push([l,r])
+        if (sizeOfS[i])
+        {
+            var s = '{ ';
+            for (var j = l; j < r; j++)
+            {
+                s += j + ', '
+            }
+            s += r + ' } \n';
+            if (algorithm === '3')
+            {
+                var id = i + 3;
+                if (!i) $('#conArea').append(consoleCount + '.');
+                $('#conArea').append('Agent ' + id + ' checks S' + id + ' = ' + s );
+            }else{
+                var id = i ? 'U left' : consoleCount + '.' + 'U right';
+                $('#conArea').append(id + ' = ' + s );
+            }
+        }
     }
-    for (var i = 0; i < S.length; i++)
+    for (var i = 0; i < a; i++)
     { 
         S[i][0]--;
         S[i][1]++;
         if(S[i][1] === n)
         {
             S[i][1] = 0;
+        }
+        if (!sizeOfS[i])
+        {
+            S[i][0] = -1;
         }
     }
 }

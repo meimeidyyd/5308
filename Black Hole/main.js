@@ -186,7 +186,7 @@ function console(id, m)
             message = 'Agent ' + id +' reads messages from the white board of node ' + nodeV.pos;
             break;
         case 6:
-            message = id;
+            message = 'Agent ' + id.id +' notifies other nodes at ' + id.next + ' to start the new round';
             break;
         case 7:
             message = 'Agent ' + id +' terminates with status alone'; 

@@ -16,8 +16,10 @@ function Devide(a)
         a.stage++;
         a.direction = - a.direction;
 
-
         var left = (a.id === 2) ? nodeV.right + a.next : nodeV.left + a.next;
+        unexplored = (a.id === 2) ?  - nodeV.right + a.next - 1 : nodeV.left - a.next - 1;
+        unexplored = unexplored < 0 ? unexplored + n :unexplored;
+        getSegments((a.id === 2) ? nodeV.right: a.next);
         if (!a.next && a.id === 2)
         {
             left += n;    
@@ -27,8 +29,6 @@ function Devide(a)
         a.goal = left + 1 - a.id;
         E[a.id - 1][2 - a.id] = a.next; 
         whiteBoard(a.id, a.next, left, right);
-        var message = 'U' + a.stage + ' leftMin = ' + left  + ' ,U' + a.stage + ' rightMax = ' + right;
-        console(message, 6);
         if(E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
         {
             a.report = true;
@@ -68,56 +68,64 @@ function OptTime(a)
 
 function TradeOff(a)
 {
+
+    if (a.report && !a.next)
+    {
+        a.terminate = true;
+        console(a.id, 2);
+        done++;
+        return;
+    }
+    
+    // notify agents at the right side
+    if (a.state === 4 && a.stage === 3)
+    {
+        notify(a, 0);
+        a.direction = -a.direction;
+        a.state = 3;
+        a.stage++;
+    // notify agents at the left side
+    }else if(a.state === 4 && a.stage === 4)
+    {
+        notify(a, 1);
+        a.goal  = S[a.id - 3][0];
+        var goal = a.goal ? a.goal : n;
+        a.state = 3;   
+        a.stage = 1;
+    } 
+    
     if (a.goal === a.next && a.state === 3)
     {
+        // have checked both sides,then move left notify other nodes
+        if (a.stage === 2)
+        {
+            a.stage++;
+            a.goal      = -1;
+            var left    = S[a.id - 3][0];
+            var right   = S[a.id - 3][1];
+            if (a.next)
+            {   
+                right = a.next < right ? a.next : right;
+            }
+            // find the black hole
+            if (left + 2 === right || left + 2 === n)
+            {
+                a.report = true;
+                done = k - 1;
+                a.goal = 0;
+            }
+            unexplored = right ? (right - left - 1) : (n - left - 1);
+            getSegments(left);
+        }
         // have checked the left side
         if (a.stage === 1 )
         {
             a.goal = S[a.id - 3][1];
             a.stage++;
             a.direction = - 1;
-            left = a.next > left ? a.next : left;
         }
-        // have checked both sides,then move left notify other nodes
-        else if (a.stage === 2)
-        {
-            a.stage++;
-            a.goal = -1;
-            if (a.next)
-            {    
-                right = a.next < right ? a.next : right;
-            }
-            // find the black hole
-            if (left + 2 === right || left + 2 === n)
-            {
-                console(a.id, 1);
-                a.report = true;
-                a.goal = 0;
-                stop = true;
-            }
-            unexplored = right ? right - left : n - left;
-            getSegments();
-        }
+        
     }
-    if (a.state === 4 && a.stage === 3)
-    {
-        notify(a);
-        a.direction = - 1;
-        a.stage++;
-        a.state = 3;
-    }
-    
-    if(a.state === 4 && a.stage === 4)
-    {
-        notify(a);
-        a.goal  = S[a.id - 3][0];
-        var goal = a.goal ? a.goal : n;
-        a.direction = goal > a.next ? 1 : -1;
-        a.state = 3;
-        a.stage = 1;
-    } 
-    
-    
     if (a.id < 3)
     {
        cautiousWalk(a);
@@ -209,7 +217,6 @@ function chase(a)
         {
             a.terminate = true;
             done++;
-            
         }
         else if (algorithm === '6')
         {   
@@ -324,21 +331,31 @@ function cautiousWalk(a)
 }
 
 
-function notify(a)
+function notify(a, t)
 {
     for (var i = 2; i < k; i++) 
     {
-        if (i === a.id - 1)
+        if (!t && i === a.id - 1)
         {
             continue;
         }
-        if (agents[i].next === a.next)
+        if (agents[i].next === a.next && i - 2 < S.length)
         {
-            agents[i].goal = S[i - 2][0];
-            var goal = agents[i].goal ? agents[i].goal : n;
-            agents[i].direction = goal > agents[i].next ? 1 : -1;
+            var g = S[i - 2];
+            if (g[0] != -1)
+            {
+                agents[i].goal = g[0];
+                if (g[0] <= a.next && (g[1] >= a.next || g[1] === n ))
+                {
+                    agents[i].direction = -agents[i].direction;
+                }else{
+                    agents[i].direction = 1;
+                }
+                
+            }
             agents[i].stage = 1;
             agents[i].state = 3;
         }
     }
+    console(a, 6);
 }
