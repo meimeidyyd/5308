@@ -68,6 +68,5 @@ function drawFrame() {
     m2.draw(context);
 }
 
-function 
 
 drawFrame();

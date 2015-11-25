@@ -16,19 +16,26 @@ function Devide(a)
         a.stage++;
         a.direction = - a.direction;
 
-        var left = (a.id === 2) ? nodeV.right + a.next : nodeV.left + a.next;
+        
         unexplored = (a.id === 2) ?  - nodeV.right + a.next - 1 : nodeV.left - a.next - 1;
         unexplored = unexplored < 0 ? unexplored + n :unexplored;
+
         getSegments((a.id === 2) ? nodeV.right: a.next);
+
+        var left = (a.id === 2) ? nodeV.right + a.next : nodeV.left + a.next;
+        //when nodeV is at homebase
         if (!a.next && a.id === 2)
         {
             left += n;    
         }
+
         left = Math.floor(left / 2) + 1;
         var right = left - 1;
         a.goal = left + 1 - a.id;
+        
         E[a.id - 1][2 - a.id] = a.next; 
         whiteBoard(a.id, a.next, left, right);
+        // check if the algorithm terminates
         if(E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
         {
             a.report = true;
@@ -242,7 +249,7 @@ function cautiousWalk(a)
         backward = linkStates[linkBackward];
     
     
-    // have not started / have not reach the goal
+    // have not started / have not reach the goal 
     if (!a.state  || (a.next != a.goal && a.state === 1 && !forward && backward === 2))
     {
         a.state = 1;
@@ -264,6 +271,7 @@ function cautiousWalk(a)
     {
         if (forward  && backward)
         { 
+            // check if the algorithm terminates
             if (E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
             {
                 //a.state = 1;
@@ -293,7 +301,7 @@ function cautiousWalk(a)
             {
                 a.state = 3;
                 E[a.id - 1][a.id - 1] = a.next;
-
+                // check if the algorithm terminates
                 if(E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
                 {
                     a.report = true;

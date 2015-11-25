@@ -3,7 +3,7 @@ function init()
 {
     // reset agents and status
     n      = nodes.length;
-    U      = [];
+    // U      = [];
     done   = 0;
     unexplored  = n - 1;
     consoleCount  = 0;

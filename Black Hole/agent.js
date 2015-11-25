@@ -79,7 +79,7 @@ function Agent(p, Id, d)
     
     this.move = function () 
     {
-        this.doAlgorithm();
+        this.doAlgorithm();//change goal state direction
         // it stays
         if (this.state > 3)
         {
@@ -88,7 +88,7 @@ function Agent(p, Id, d)
         }
         
         var current = this.next;
-        var next    = current + this.direction;
+        var next    = current + this.direction;//update next position of id
         
         if (next < 0)
         {
@@ -115,7 +115,7 @@ function Agent(p, Id, d)
                 this.vanish = true;
                 if (algorithm != '3')
                 {
-                    done++;
+                    done++;//1. terminates| ate by blackhole
                 }
             }
             this.x = p.x;

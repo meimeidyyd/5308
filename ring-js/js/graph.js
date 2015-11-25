@@ -31,7 +31,7 @@ Graph.prototype.drawGraph = function (n, c)
     var rad         = size / (1 + 1.2 / Math.sin(pin));
     var R           = rad * 1.2 / Math.sin(pin);
     // set the maximum radius
-    rad = rad > 15 ? 15 : rad;
+    //rad = rad > 15 ? 15 : rad;
     
     this.setNode(n,x0,y0,R,c);
     this.setLink(n,x0,y0,R);
