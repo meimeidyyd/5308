@@ -560,12 +560,12 @@ function Pairing1(a){
 function lastSafeNode(id){
   return lastVisited[id];    
 }
-function getDirection(id){
-    var half=Math.floor(n/2);
-    if(id==0)return false;
-    return id<=half ? true : false
+// function getDirection(id){
+//     var half=Math.floor(n/2);
+//     if(id==0)return false;
+//     return id<=half ? true : false
 
-}
+// }
 
 // function lastSafeNode(a){
   

@@ -53,7 +53,7 @@ $(document).ready(function () {
         randomAgents();
         // generate agents
         //initGathering();
-        
+        initAgents(algorithm);
     });
     
     $('#size').change(function() {

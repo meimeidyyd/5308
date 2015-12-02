@@ -14,10 +14,6 @@ function Agent(p, Id, d)
     this.vanish     = false;
     this.chasing    = -1;
     this.joinme     = false;
-    this.imageX=0,  // 图像定位坐标
-        this.imageY= 0;
-        this.width= 50;  // 图像显示区域大小
-        this.height= 60;
 
     /*  1.Devide:    state: 0 : init, 1 : explore, 2 : return ,3 : go to v
         4.Pairing:   state: 0 : init, 1 : explore, 2 : return ,3 : chase, 5 : become paired-left or alone
@@ -30,16 +26,13 @@ function Agent(p, Id, d)
     
     this.draw = function () 
     {
-        if(algorithm==3 && this.id<=2){ 
-            context.fillStyle = this.fillStyle;
-            context.beginPath();
-            context.arc(this.x, this.y, this.radius,  0, 2 * Math.PI, true);
-            context.closePath();
-            context.fill();
-        }
-        else{
-    context.drawImage(playerImage, this.imageX, this.imageY, this.width, this.height, this.x-25, this.y-25,this.height, this.width, this.height);
-        }
+        context.fillStyle = this.fillStyle;
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius,  0, 2 * Math.PI, true);
+        context.closePath();
+        context.fill();
+        
+
     }
 
     this.doAlgorithm = function ()
@@ -154,64 +147,29 @@ function moveAgents()
         return;
     }
     // draw agents with text
-    // context.font = nodes[0].radius + "px Arial";
-
-    // for (var i = 0; i < agents.length; i++) 
-    // {
-    //     var ai = agents[i];
-    //     if (ai.vanish)
-    //     {
-    //         continue;        
-    //     }
-    //     if (!ai.terminate)
-    //     {
-    //         var p  = positionChange[i];
-    //         agents[i].x += p[0];
-    //         agents[i].y += p[1];
-    //         if(getDirection(ai.next)){
-    //             ai.imageY = 0;
-    //             if(ai.direction==-1) ai.imageY = 60;
-    //         }
-    //         else {
-    //             ai.imageY = 60;
-    //             if(ai.direction==1) ai.imageY = 0;
-    //         }
-
-    //         if (ai.imageX >= 150) ai.imageX = 0;
-    //         else ai.imageX += 50;
-            
-            
-        
-    //     }
-    //     //  draw agents 
-    //     agents[i].draw(context);
-    //     // set the text at the center of the nodes
-    //     var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6)+35;
-    //     var y = ai.y + ai.radius / 3;
-    //     // set black hole node text with different color
-    //     context.fillStyle = "#ff0000";
-    //     context.fillText(i + 1, x, y);
-    // }
-    var temp=[];
-    for(var i=0;i<k;i++){
-        temp.push(agents[i].next);
-    }
-    var unique=[];
-    unique= temp.filter( onlyUnique );
-    for (var i=0;i<unique.length;i++) {
-        var results= [];
-        for (var j=0;j<k;j++){
-            if(temp[j]==-1)continue;
-            if(unique[i]==temp[j]){
-                results.push(j);
-                temp[j]=-1;
-            }
+    context.font = nodes[0].radius + "px Arial";
+    for (var i = 0; i < agents.length; i++) 
+    {
+        var ai = agents[i];
+        if (ai.vanish)
+        {
+            continue;        
         }
-           
-        moveAgents1(results);
-         
+        if (!ai.terminate)
+        {
+            var p  = positionChange[i];
+            agents[i].x += p[0];
+            agents[i].y += p[1];
+        }
+        //  draw agents 
+        agents[i].draw(context);
+        // set the text at the center of the nodes
+        var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6);
+        var y = ai.y + ai.radius / 3;
+        // set black hole node text with different color
+        context.fillStyle = "#ffffff";
+        context.fillText(i + 1, x, y);
     }
-        
 }
 
 
@@ -225,57 +183,12 @@ function drawAgents()
         //  draw agents 
         agents[i].draw(context);
         // set the text at the center of the nodes
-        var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6)+35;
+        var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6);
         var y = ai.y + ai.radius / 3;
         // set black hole node text with different color
-        context.fillStyle = "#ff0000";
+        context.fillStyle = "#ffffff";
         context.fillText(i + 1, x, y);//content,x axis,y axis
     }
-}
-
-function moveAgents1(a){
-    //if(a.length==0)return;
-    context.font = nodes[0].radius + "px Arial";
-    var offset=35;
-
-    for (var i = 0; i < a.length; i++) 
-    {
-        var ai = agents[a[i]];
-        if (ai.vanish)
-        {
-            continue;        
-        }
-        if (!ai.terminate)
-        {
-            var p  = positionChange[a[i]];
-            ai.x += p[0];
-            ai.y += p[1];
-            if(getDirection(ai.next)){
-                ai.imageY = 0;
-                if(ai.direction==-1) ai.imageY = 60;
-            }
-            else {
-                ai.imageY = 60;
-                if(ai.direction==1) ai.imageY = 0;
-            }
-
-            if (ai.imageX >= 150) ai.imageX = 0;
-            else ai.imageX += 50;
-            
-            
-        
-        }
-        //  draw agents 
-        agents[a[i]].draw(context);
-        // set the text at the center of the nodes
-        var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6)+offset;
-        var y = ai.y + ai.radius / 3;
-        // set black hole node text with different color
-        context.fillStyle = "#ff0000";
-        context.fillText(a[i] + 1, x, y);
-        offset+=15;
-    }
-
 }
 
 
@@ -332,94 +245,33 @@ function randomAgents()
         bases.push(r[c]);
         i++;
     }
-    initAgents(algorithm);
 }
 
 function initAgents(algorithm){
-    //bases=[2,5,6];
+    bases=[2,5,6];
     for (var i = 0; i < k; i++) 
     {
-
         if(algorithm==1){
             var a = new Agent(nodes[0], i + 1, i==0 ? 1 : -1);
 
-           
-        }
-         if(algorithm==2){
-            
-           var a = new Agent(nodes[0], i + 1, 1);
-           
-           
-        }
-        if(algorithm==3){
-            //k=n-1;
-           var a = new Agent(nodes[bases[i]], i + 1, 1);
+            //a.next = forward;
+     
+            //agent.goal = -1;
+            //agent.state=0;
+            //agents.push(a);
         }
         if(algorithm==4){
             var a = new Agent(nodes[bases[i]], i + 1, 1);
 
-            
-            
-        }
-        // if(algorithm==5){
-        //     //k=n-1;
-        //    var a = new Agent(nodes[0], i + 1, 1);
-        // }
-        if(algorithm==6){
-            //k=n-1;
-           var a = new Agent(nodes[bases[i]], i + 1, 1);
+            //a.next = forward;
+            a.next = bases[i];
+            a.goal = -1;
+            //agent.state=0;
+            // agents.push(a);
         }
         agents.push(a);
-
         
     }
     drawAgents();  
 }
-
-// function noname(){
-//     var temp=[];
-//     for(var i=0;i<k;i++){
-//         temp.push[agents[i].next];
-//     }
-//     if(!checkDuplicates(temp)){
-//         var unique = temp.filter( onlyUnique );
-//         for (var i =0;i<unique.length;i++) {
-//             var results = [];
-//            for (var j =0;j<k;j++){
-//                 if(temp[j]==-1)continue;
-//                 if(unqiue[i]==temp[j]){
-//                     results.push[j];
-//                     temp[j]=-1;
-//                 }
-//            }
-           
-//                 drawAgentsAtTheSamePosition(results);
-         
-//            }
-//         }
-
-//     }
-
- 
-
-
-// function checkDuplicates(a){
-//     var counts = [];
-//     for(var i = 0; i <= a.length; i++) {
-//         if(counts[a[i]] === undefined) {
-//             counts[a[i]] = 1;
-//         } else {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
-function onlyUnique(value, index, self) { 
-    return self.indexOf(value) === index;
-}
-
-// function drawAgentsAtTheSamePosition(results){
-
-// }
-
 

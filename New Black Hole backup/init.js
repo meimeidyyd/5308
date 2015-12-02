@@ -26,7 +26,7 @@ function init()
             break;
             
         case "3":
-            //setK(4);
+            setK(4);
             initTradeOff();
             break;
             
@@ -40,7 +40,7 @@ function init()
             break;
             
         case "6":
-            //setK(2);
+            setK(2);
             initGathering();
             break;
             
@@ -73,15 +73,12 @@ function initDevide()
 
 function initOptTime()
 {
-    
-    if(k!=n-1){
-        k = n - 1;
-        initAgents(2);
-    }
-    
+    k = n - 1;
     for (var i = 0; i < k; i++) 
     {
-        agents[i].goal = i;
+        var a = new Agent(nodes[0], i + 1, 1);
+        a.goal = i;
+        agents.push(a);
         agents[i].move();
     }
 }
@@ -90,7 +87,6 @@ function initOptTime()
 function initTradeOff()
 {
     getSegments(0);
-    
     for (var i = 0; i < k; i++) 
     {
         var a = new Agent(nodes[0], i + 1, i ? 1 : -1);
@@ -122,7 +118,7 @@ function initPairing()
         var agent = new Agent(nodes[bases[i]], i + 1, 1);
         agent.next = bases[i];
         agent.goal = -1;
-        //agents.push(agent);
+        agents.push(agent);
         agents[i].move();
     }
     drawAgents();  
@@ -142,30 +138,26 @@ function initGathering()
     
     for (var i = 0; i < k; i++) 
     {
-        
-        agents[i].next = bases[i];
-        agents[i].goal = -1;
-        //agents[i].push(agent);
+        var agent = new Agent(nodes[bases[i]], i + 1, 1);
+        agent.next = bases[i];
+        agent.goal = -1;
+        agents.push(agent);
         agents[i].move();
     }
-     
+    drawAgents();  
 }
 
 
+function initBod()
+{
 
-// function initBod()
-// {
 
-
-// }
+}
 
 function initDevide1()
 {
     //if no agents return
-    if(k!=2){
-        k = 2;
-        initAgents(1);
-    }
+    k = 2;
     initSegments();
     divideSegments(k,U[0]);
     for (var i = 0; i < k; i++) 
@@ -180,9 +172,7 @@ function initPairing1()
 {
     for (var i = 0; i < k; i++) 
     {
-        agents[i].next = bases[i];
-        agents[i].goal = -1;
-        agents[i].state=0;
+        
         agents[i].move();
     }
     
