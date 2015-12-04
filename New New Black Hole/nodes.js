@@ -5,7 +5,6 @@ function node(p, r)
     this.y      = p.y;
     this.radius = r;
     this.fillStyle = "#eeeeee";
-    this.mark   =[];
     this.draw = function () 
     {
         context.fillStyle = "#000000";

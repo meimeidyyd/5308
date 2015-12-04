@@ -3,7 +3,7 @@ function link(A, B)
 {
     this.nodeA = A;
     this.nodeB = B;
-    this.strokeStyle = "#222222";
+    this.strokeStyle = "red";
     this.width = 3;
     this.draw = function () 
     {
@@ -23,7 +23,7 @@ function setLinks()
     for (var i = 0; i < n; i++) 
     {
         links[i] = new link(nodes[i], nodes[(i + 1) % n]);
-        //linkStates[i] = 0;
+        linkStates[i] = 0;
     }
     resetLinkStates();
 }
@@ -161,6 +161,7 @@ function getSegments(left)
     }
 }
 
+
 function initSegments(){
     var u=[];
     var e=[0];
@@ -191,4 +192,3 @@ function divideSegments(alive,u){
     $('#conArea').append( printf('Agent: %2d ',alive)+'U={'+ u.slice(offset*(alive-1),currentUnexploredSize).toString()+'}\n'  );
 
 }
-

@@ -12,13 +12,13 @@ function init()
     resetNodeV();
     disableButtons();
     resetLinkStates();
-    //agents = [];
+    agents = [];
     
     // call function generate agents in specific algorithm
     switch (algorithm) 
     {      
         case "1":
-            initDevide1();
+            initDivide();
             break;
             
         case "2":
@@ -31,8 +31,8 @@ function init()
             break;
             
         case "4":
-            //setK(3);
-            initPairing1();
+            setK(3);
+            initPairing();
             break;
         
         case "5":
@@ -53,23 +53,46 @@ function init()
 }
 
 
-function initDevide()
+// function initDivide()
+// {
+//     k = 2;
+//     var right = Math.floor(n / 2);
+//     var left  = right + 1;
+//     var max = n - 1;
+//     nodeV.left = left;
+//     nodeV.right = right;
+//     getSegments(0);
+//     for (var i = 0; i < k; i++) 
+//     {
+//         var a = new Agent(nodes[0], i + 1, i ? 1 : -1);
+//         a.goal = i ? right : left;
+//         agents.push(a);
+//         agents[i].move();
+//     }
+// }
+
+function initDivide()
 {
     k = 2;
-    var right = Math.floor(n / 2);
-    var left  = right + 1;
-    var max = n - 1;
-    nodeV.left = left;
-    nodeV.right = right;
-    getSegments(0);
+    // var right = Math.floor(n / 2);
+    // var left  = right + 1;
+    // var max = n - 1;
+    // nodeV.left = left;
+    // nodeV.right = right;
+    // getSegments(0);
+    initSegments();
+    divideSegments(k,U[0]);
     for (var i = 0; i < k; i++) 
     {
-        var a = new Agent(nodes[0], i + 1, i ? 1 : -1);
-        a.goal = i ? right : left;
+        var a = new Agent(nodes[0], i + 1, i ? -1 : 1);
+        a.goal = a.direction>0 ? U[0][S[0][1]] : U[0][S[1][0]];
         agents.push(a);
         agents[i].move();
     }
+     
 }
+
+
 
 function initOptTime()
 {
@@ -118,15 +141,42 @@ function initPairing()
         var agent = new Agent(nodes[bases[i]], i + 1, 1);
         agent.next = bases[i];
         agent.goal = -1;
+        agent.state=0;
         agents.push(agent);
         agents[i].move();
     }
-    drawAgents();  
+    //drawAgents();  
+    
 }
 
 
 function initElimination()
 {
+   
+    for(var i=0;i<=k;i++){
+        if(agents[i].state==-5){
+            
+            agents[i].terminate=false;
+            agents[i].direction=1;
+            agents[i].goal=(agents[i].next+(Math.floor((n-1)/2)))%n;
+            bases[i]=agents[i].next;
+            pairedBasesRound.push(1);
+            pairedBases.push(agents[i].next);
+            
+            
+            if(!agents[agents[i].chasing].vanish){
+                //temp[3]=agents[i].chasing+1;
+                agents[agents[i].chasing].terminate=false;
+                
+                
+                agents[agents[i].chasing].goal=Math.abs(agents[i].next-(Math.floor((n-1)/2)))%n;
+                bases[agents[i].chasing]=agents[i].next;
+                agents[agents[i].chasing].move();
+            }
+            agents[i].move();
+        }
+    }
+
 
 
 }
@@ -150,30 +200,6 @@ function initGathering()
 
 function initBod()
 {
-
-
-}
-
-function initDevide1()
-{
-    //if no agents return
-    k = 2;
-    initSegments();
-    divideSegments(k,U[0]);
-    for (var i = 0; i < k; i++) 
-    {
-        agents[i].goal = agents[i].direction>0 ? U[0][S[0][1]] : U[0][S[1][0]];
-        
-        agents[i].move();
-    }
-}
-
-function initPairing1()
-{
-    for (var i = 0; i < k; i++) 
-    {
-        
-        agents[i].move();
-    }
     
+
 }

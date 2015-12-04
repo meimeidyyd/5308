@@ -1,5 +1,5 @@
 //-------------------------Do Algorithms-------------------------
-function Devide(a)
+function Divide(a)
 {
     if (cautiousWalk(a))
     {
@@ -369,6 +369,9 @@ function notify(a, t)
 }
 
 
+
+
+
 function cautiousWalkSimple(a,forward,backward){
    
     if(a.state===0 && linkStates[forward]===0 ){//如果 agent的状态是：准备探索 并 forwardport的状态是 danger
@@ -387,7 +390,7 @@ function cautiousWalkSimple(a,forward,backward){
         linkStates[backward] = 2;//backwardport的状态变成 安全
         a.direction = -a.direction;
         a.state=-1;
-        lastVisited[a.id-1]= a.next-1<0 ? n-1 : a.next-1;
+        lastVisited[a.id-1]= a.next;
         return;
         
     }
@@ -477,6 +480,7 @@ function Divide1(a){
 
 }
 
+
 function Pairing1(a){
     var ports= getLinks(a);
     var forward = ports[0],
@@ -507,17 +511,22 @@ function Pairing1(a){
 
     if(nodeVisited===1){
         //step1 continued
-        a.chasing=chasedAgent;
+        //if(a.chasing==-1){
+            a.chasing=chasedAgent;
+            console(a,10);
+            //}
 
-        alert(a.id+' :chaising '+agents[chasedAgent].id +' lastsafenode: '+lastSafeNode(a.chasing)+' a.chasing.direction: '+agents[a.chasing].direction+' agents[a.chasing].state: '+agents[a.chasing].state);
+        //alert(a.id+' :chaising '+agents[chasedAgent].id +' lastsafenode: '+lastSafeNode(a.chasing)+' a.chasing.direction: '+agents[a.chasing].direction+' agents[a.chasing].state: '+agents[a.chasing].state);
         if(a.next==lastSafeNode(a.chasing)){
         //step3
             a.joinme=true;
             a.terminate=true;
-            //done++;
+            done++;
             a.state=-5;
-            alert(a.id+' :paired-left with '+agents[a.chasing].id+' a.next:'+a.next);
-
+            
+            //alert(a.id+' :paired-left with '+agents[a.chasing].id+' a.next:'+a.next);
+            console(a.id,8);
+            return;
         }
     }
 
@@ -525,9 +534,10 @@ function Pairing1(a){
     //step2   
     if(nodeVisited>1){
             a.terminate=true;
-            //done++;
+            done++;
             a.state=4;//alone
-            alert(a.id+' :alone');
+            console(a.id,7);
+            //alert(a.id+' :alone');
     }
 
     //step1,a.chasing==-1 是初始化值，代表不chasing
@@ -536,12 +546,13 @@ function Pairing1(a){
         for(var i=0;i<agents.length;i++){
             if(agents[i].id!=a.id){
                 if(agents[i].next==a.next&&agents[i].joinme){
-                    alert(a.id+'paired-right: '+a.next+' paired-left: '+agents[i].next);
+                    //alert(a.id+'paired-right: '+a.next+' paired-left: '+agents[i].next);
+                    console(a.id,9);
                     a.state=5;//paired-right
                     agents[i].joinme=false;
                     
                     a.terminate=true;
-                    //done++;
+                    done++;
                     break;
 
                 }
@@ -557,36 +568,82 @@ function Pairing1(a){
 }
 
 
-function lastSafeNode(id){
-  return lastVisited[id];    
-}
-function getDirection(id){
-    var half=Math.floor(n/2);
-    if(id==0)return false;
-    return id<=half ? true : false
+// function lastSafeNode(id){
+//   return lastVisited[id];    
+// }
 
-}
-
-// function lastSafeNode(a){
-  
-//     if(a.state==-1)return a.next+1==n ? 0 : a.next+1;
-//     if(a.state==0)return a.next;
-//     if(a.state==1)return a.next-1<0 ? n-1 : a.next-1;
+function lastSafeNode(chase){
+    a=agents[chase];
+    if(a.state==-1)return a.next+1==n ? 0 : a.next+1;
+    if(a.state==0)return a.next;
+    if(a.state==1)return a.next-1<0 ? n-1 : a.next-1;
   
    
    
     
-// }
-  
-//     if(a.state==0)return a.next+1==n ? 0 : a.next+1;
-//     if(a.state==1)return a.next;
-//     if(a.state==-1)return a.next-1<0 ? n-1 : a.next-1;
-  
-   
-   
+}
+
+
+function Elimination(a){
+    //需要大改，a.state 不能同时即是 cautious walk的state 又能代表是pairedleft、right ，可以在agent类里多加两个成员
+    var ports= getLinks(a);
+    var forward = ports[0],
+        backward = ports[1];
+
+    // pairedBasesRound :update any pairedBases'round
+    // pairedBases: record any pairedbases
+
+    //case a: black is taken care by agent.collision. ->a.vanish=true; may need done++?
+
     
-// }
+    if(a.next==a.goal){
+        if(a.state==-2){
+            pairedBasesRound[isPairedBase(a.goal)]=0;
+            a.terminate=true;
+            //done++;
+        }
+        if(a.state==2){
+            if(pairedBasesRound[isPairedBase(a.goal)]!=0){
+                pairedBasesRound[isPairedBase(a.goal)]++;
+                a.direction=-a.direction;
+                a.state= a.direction>0 ? 5 : -5;
+            }
+        }
 
+    }
 
+    var currentPairedBaseIndex=isPairedBase(a.next);
+    if(currentPairedBaseIndex>-1){
+        var currentHomeBaseIndex=isPairedBase(bases[a.id-1]);
+        //case b:
+        if(pairedBasesRound[currentPairedBaseIndex]>pairedBasesRound[currentHomeBaseIndex]){
+            a.state=-2;
+            a.goal=bases[a.id-1];
+
+        }
+        //case c:
+        if(pairedBasesRound[currentPairedBaseIndex]==pairedBasesRound[currentHomeBaseIndex]){
+            a.state=2;
+            pairedBasesRound[currentPairedBaseIndex]=0;
+            a.goal=bases[a.id-1];
+        }
+        a.direction=-a.direction;
+        
+        
+
+    }
+    cautiousWalkSimple(a,forward,backward);
+
+  
+}
+
+function isPairedBase(next){
+   
+    for (var i = 0; i < pairedBases.length; i++) {
+        if(pairedBases[i]==next)return i;
+        else return -1;
+    }
+
+}
 
 

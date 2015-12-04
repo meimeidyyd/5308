@@ -37,9 +37,7 @@ $(document).ready(function () {
         enableButtons();
         drawGraph(1);
         checkK();
-        //initGathering();
-        initAgents(algorithm);
-
+        initGathering();
     });
     
     $('#random').click(function () {
@@ -52,8 +50,7 @@ $(document).ready(function () {
         // set random bases
         randomAgents();
         // generate agents
-        //initGathering();
-        
+        initGathering();
     });
     
     $('#size').change(function() {
@@ -105,14 +102,20 @@ function disableButtons()
 function enableButtons()
 {
     stop = true;
-    agents = [];
-    k = 0;
+    if(algorithm!='4'){
+        agents = [];
+        k = 0;
+        enableAgents();
+
+    }
+    
     $('#start').text('Start');
     $('#random').removeAttr('disabled');
     $('#size').removeAttr('disabled');
     $('#addLabels').removeAttr('disabled');
+   
     $('#selectAlgorithm').removeAttr('disabled');
-    enableAgents();
+    
 }
 
 function disableAgents()

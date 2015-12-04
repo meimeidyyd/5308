@@ -17,7 +17,6 @@ function drawGraph(type)
                 blackHole = Math.floor(Math.random() * (n - 1)) + 1;
                 break;
         }
-        blackHole = 14;
         nodes[blackHole].fillStyle = '#000000';
         if (algorithm != 6)
         {
@@ -76,6 +75,7 @@ function checkN()
 // get a random agent number k that k >= a
 function setK(a)
 {
+    if(k>=a&&k<=n-1)return;
     if (!k || k < a)
     {
         k = parseInt($('#k').val());
@@ -194,8 +194,12 @@ function console(id, m)
             break;
         case 8:
             message = 'Agent ' + id +' leaves a mark Join me and terminates with status paired-left';
+            break;
         case 9:
             message = 'Agent ' + id +' clears the mark and terminates with status paired-right';
+            break;
+        case 10:
+            message = 'Agent ' + id.id +' begin to chase agent '+(id.chasing+1)+ ' lastSafeNodeForChasedAgent '+lastVisited[id.chasing];
             break;
     }
     $('#conArea').append((consoleCount++) + ')\n' + message + '.\n');
@@ -209,4 +213,3 @@ function console(id, m)
           return b?s.slice(b*-1).toString():s.toString();
      })
 }
-
