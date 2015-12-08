@@ -69,6 +69,7 @@ $(document).ready(function () {
     
     $('#selectAlgorithm').change(function() {
         algorithm = $(this).val();
+        if(algorithm=='5')return;
         k = 0;
         enableButtons();
         drawGraph(1);

@@ -2,6 +2,7 @@
 function init()
 {
     // reset agents and status
+    if(algorithm!='5'){
     n      = nodes.length;
     // U      = [];
     done   = 0;
@@ -15,6 +16,7 @@ function init()
     agents = [];
     moves=0;
     idealtime=0;
+    }
     
     // call function generate agents in specific algorithm
     switch (algorithm) 
@@ -141,6 +143,8 @@ function initPairing()
     //bases=[2,13,9,22,21,15,3,0,19,20,6,18,17,7,4,12,10,14,16,5];
     //bases=[2,9,16,3,11,6];
     //bases=[1,11,12,22];
+    bases=[13,1,15,20,4,5,12];
+    k=7;
     for (var i = 0; i < k; i++) 
     {
         var agent = new Agent(nodes[bases[i]], i + 1, 1);
@@ -157,32 +161,53 @@ function initPairing()
 
 function initElimination()
 {
-   
-    for(var i=0;i<=k;i++){
+pairedBasesRound=[];
+pairedBases=[];
+alert(k);
+done=0;
+var half=Math.floor((n-1)/2);
+
+    for(var i=0;i<agents.length;i++){
+        //alert(agents[i]);
+
         if(agents[i].state==-5){
             
             agents[i].terminate=false;
             agents[i].direction=1;
-            agents[i].goal=(agents[i].next+(Math.floor((n-1)/2)))%n;
+            agents[i].goal=(agents[i].next+half)%n;
             bases[i]=agents[i].next;
             pairedBasesRound.push(1);
             pairedBases.push(agents[i].next);
+            agents[i].state=0;
             
-            
-            if(!agents[agents[i].chasing].vanish){
+            if(agents[i].chasing!=-1&&!agents[agents[i].chasing].vanish){
                 //temp[3]=agents[i].chasing+1;
+
                 agents[agents[i].chasing].terminate=false;
+                agents[agents[i].chasing].state=0;
+                 agents[agents[i].chasing].direction=-1;
                 
-                
-                agents[agents[i].chasing].goal=Math.abs(agents[i].next-(Math.floor((n-1)/2)))%n;
+                agents[agents[i].chasing].goal=agents[i].next-half<0 ? (n-1)+(agents[i].next-half) : agents[i].next-half;
                 bases[agents[i].chasing]=agents[i].next;
+                //alert(agents[agents[i].chasing].id+' : '+bases[agents[i].chasing]);
                 agents[agents[i].chasing].move();
             }
             agents[i].move();
         }
+        //drawAgents(); 
     }
+    for(var i=0;i<agents.length;i++){
+  
+        if(agents[i].state==4){
+            //alert(agents[i].id+' : alone');
+           agents.splice(i,1); 
+           i=0;           
+        }
+   }
 
+    //pause = true;
 
+alert('done');
 
 }
 

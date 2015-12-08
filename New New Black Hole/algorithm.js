@@ -154,11 +154,7 @@ function Pairing(a)
 }
 
 
-function Elimination(a)
-{
 
-
-}
 
 
 
@@ -569,7 +565,7 @@ function Pairing1(a){
                     
                     a.terminate=true;
                     done++;
-                    break;
+                    return;
 
                 }
             }
@@ -602,6 +598,7 @@ function lastSafeNode(chase){
 
 function Elimination(a){
     //需要大改，a.state 不能同时即是 cautious walk的state 又能代表是pairedleft、right ，可以在agent类里多加两个成员
+    //alert(a.id+' : '+a.direction);
     var ports= getLinks(a);
     var forward = ports[0],
         backward = ports[1];
@@ -611,9 +608,17 @@ function Elimination(a){
 
     //case a: blackhole is taken care by agent.collision. ->a.vanish=true; may need done++?
 
-    
-    if(a.next==a.goal){
-        if(a.state==-2){
+
+    var currentPairedBaseIndex=isPairedBase(a);
+    if(a.state==3&&a.next==a.goal){
+        a.terminate=true;
+    }
+    else if(currentPairedBaseIndex==-1&&a.next==a.goal&&abs(a.state)!=2){
+        a.goal=bases[a.id-1];
+        a.state=3;
+    }
+    else if(a.next==a.goal&&abs(a.state)==2){
+          if(a.state==-2){
             pairedBasesRound[isPairedBase(a.goal)]=0;
             a.terminate=true;
             //done++;
@@ -622,15 +627,12 @@ function Elimination(a){
             if(pairedBasesRound[isPairedBase(a.goal)]!=0){
                 pairedBasesRound[isPairedBase(a.goal)]++;
                 a.direction=-a.direction;
-                a.state= a.direction>0 ? 5 : -5;
+                a.state=0;
             }
         }
-
     }
-
-    var currentPairedBaseIndex=isPairedBase(a.next);
-    if(currentPairedBaseIndex>-1){
-        var currentHomeBaseIndex=isPairedBase(bases[a.id-1]);
+    else if(currentPairedBaseIndex>-1){
+        var currentHomeBaseIndex=bases[a.id-1];
         //case b:
         if(pairedBasesRound[currentPairedBaseIndex]>pairedBasesRound[currentHomeBaseIndex]){
             a.state=-2;
@@ -648,15 +650,16 @@ function Elimination(a){
         
 
     }
+    //alert('????????');
     cautiousWalkSimple(a,forward,backward);
 
   
 }
 
-function isPairedBase(next){
-   
+function isPairedBase(a){
+   next=a.next;
     for (var i = 0; i < pairedBases.length; i++) {
-        if(pairedBases[i]==next)return i;
+        if(pairedBases[i]==next&&pairedBases[i]!=bases[a.id-1])return i;
         else return -1;
     }
 
