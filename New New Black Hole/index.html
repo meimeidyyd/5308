@@ -108,8 +108,8 @@
                     <div class="title">
                         Console
                     </div>
-                    moves:<br/>
-                    idea time:<br/>
+                    <label>moves&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</label><input type="text" id="moves" disabled><br/>
+                    <label>ideal time :</label><input type="text" id="idealtime" disabled><br/>
                     <br/>
                     <textarea id="conArea"></textarea>
                 </div>
@@ -133,6 +133,7 @@
             done        = 0,
             base        = 0;
         var blackHole = Math.floor(Math.random() * (n - 1)) + 1;
+        blackHole=8;
         var algorithm   = '1';
         var time        = 0;
         var moves       = 0;
@@ -151,6 +152,9 @@
         playerImage.src = 'Mario.png';
         var pairedBasesRound =[];
         var pairedBases=[];
+        var moves=0;
+        var idealtime=0;
+        var chasedAgent=[];
     </script>
 
 </html>

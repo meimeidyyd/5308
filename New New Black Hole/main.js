@@ -190,13 +190,13 @@ function console(id, m)
             message = 'Agent ' + id.id +' notifies other nodes at ' + id.next + ' to start the new round';
             break;
         case 7:
-            message = 'Agent ' + id +' terminates with status alone'; 
+            message = 'Agent ' + id +' terminates with status alone.Visited by '+chasedAgent.toString(); 
             break;
         case 8:
             message = 'Agent ' + id +' leaves a mark Join me and terminates with status paired-left';
             break;
         case 9:
-            message = 'Agent ' + id +' clears the mark and terminates with status paired-right';
+            message = 'Agent ' + id +' clears the mark and terminates with status paired-right and paired with '+chasedAgent.toString();
             break;
         case 10:
             message = 'Agent ' + id.id +' begin to chase agent '+(id.chasing+1)+ ' lastSafeNodeForChasedAgent '+lastVisited[id.chasing];

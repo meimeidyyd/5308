@@ -86,6 +86,7 @@ function Agent(p, Id, d)
         case "7":
                 Bod(a);
         }
+
         
     }
     
@@ -144,11 +145,14 @@ function Agent(p, Id, d)
 //  update the position of every agent
 //  update the position of every agent
 function moveAgents()
+
 {
+
     if (!agents.length)
     {
         return;
     }
+    
     // draw agents with text
     // context.font = nodes[0].radius + "px Arial";
 
@@ -277,6 +281,7 @@ function moveAgents1(a){
 
 function checkCollision() 
 {
+    var temp=false;
     for (var i = 0; i < agents.length; i++) 
     {
         // If the agent vanishes or terminates.do not check
@@ -287,9 +292,18 @@ function checkCollision()
         // if there is a collision
         if (agents[i].collision())
         {
+            temp=true;
             agents[i].move();
+            $('#moves').val(moves);
+
         }
     }
+    if(temp){
+        idealtime++;
+    $('#idealtime').val(idealtime);
+    }
+    
+
     
 }
 

@@ -13,6 +13,8 @@ function init()
     disableButtons();
     resetLinkStates();
     agents = [];
+    moves=0;
+    idealtime=0;
     
     // call function generate agents in specific algorithm
     switch (algorithm) 
@@ -136,6 +138,7 @@ function initTradeOff()
             
 function initPairing()
 {
+    bases=[2,13,9,22,21,15,3,0,19,20,6,18,17,7,4,12,10,14,16,5];
     for (var i = 0; i < k; i++) 
     {
         var agent = new Agent(nodes[bases[i]], i + 1, 1);
