@@ -500,18 +500,19 @@ function Pairing1(a){
     //1. If an agent reaches a node visited by another agent b, it becomes chasing, and follows
     //b’s trace.
     //a.state==0 说明agent a 安全的到达了当前节点（a.next）
-    for(var i=0;i<bases.length&&a.state!=-1;i++){
+    for(var i=0;i<bases.length;i++){
         if(i+1!=a.id){
             //如果是最开始initialize则不判断，防止id小的node的a.next已经变了之后再比较
             if(a.next==bases[a.id-1])continue;//if(a.next==bases[a.id-1]&&a.state==0)break;
             //如果 chased （被追的agent）在探索‘临时返回’时碰见了chasing agent，则不能让被追的反过来去追现在追的
-            if(agents[i].chasing>=0&&a.next==agents[agents[i].chasing].next)continue;
+            if(agents[i].chasing>=0&&a.next==agents[agents[i].chasing].next&&agents[i].chasing==a.id-1)continue;
 
-            if(a.next>=bases[i]&&a.next<=agents[i].next){
+            //if(a.next>=bases[i]&&a.next<=lastSafeNode(i) ){
+            if(isVisited(a,bases[i],i)){
                 //if(a.id==16){alert(agents[1].next+' : '+agents[17].next+' : '+a.next);}
             //alert(a.id+' : a.next: '+a.next+' base: '+bases[i]+' agents[i].id: '+agents[i].id+' agents[i].next: '+agents[i].next);
                 nodeVisited++;
-                if(a.id==16&&(i==1||i==17)){alert(agents[1].next+' : '+agents[17].next+' : '+a.next+' : '+(i+1));}
+                //if(a.id==16&&(i==1||i==17)){alert(agents[1].next+' : '+agents[17].next+' : '+a.next+' : '+(i+1));}
                 chasedAgent.push(i+1);
                 
 
@@ -589,14 +590,11 @@ function Pairing1(a){
 
 function lastSafeNode(chase){
     a=agents[chase];
-    if(a.vanish) a.next=blackHole;
-    if(a.terminate){
-        lastVisited[chase]=a.next;
-        return lastVisited[chase];
-    }
-    if(a.state==-1)lastVisited[chase]=a.next+1==n ? 0 : a.next+1;
-    if(a.state==0)lastVisited[chase]=a.next;
-    if(a.state==1)lastVisited[chase]=a.next-1<0 ? n-1 : a.next-1;
+    if(a.vanish) lastVisited[chase]=blackHole-1<0 ? n-1 : blackHole-1;
+    else if(a.terminate) lastVisited[chase]=a.next;
+    else if(a.state==-1)lastVisited[chase]=a.next+1==n ? 0 : a.next+1;
+    else if(a.state==0)lastVisited[chase]=a.next;
+    else if(a.state==1)lastVisited[chase]=a.next-1<0 ? n-1 : a.next-1;
     else lastVisited[chase]=a.next;
     return lastVisited[chase];
 }
@@ -611,7 +609,7 @@ function Elimination(a){
     // pairedBasesRound :update any pairedBases'round
     // pairedBases: record any pairedbases
 
-    //case a: black is taken care by agent.collision. ->a.vanish=true; may need done++?
+    //case a: blackhole is taken care by agent.collision. ->a.vanish=true; may need done++?
 
     
     if(a.next==a.goal){
@@ -661,6 +659,25 @@ function isPairedBase(next){
         if(pairedBases[i]==next)return i;
         else return -1;
     }
+
+}
+
+function isVisited(current,start, end){
+    var i= end;
+    end= lastSafeNode(i);
+
+    while(start!=end){
+        if (current.next==start) {
+            //if(current.id==8)alert('current node: '+current.next+' compareAgent: '+(i+1)+' range '+start+'-'+end);
+            return true;
+        }
+
+        else if (start+1==n) start=0;
+        else start++;
+
+    }
+    if (current.next==start)return true;
+    return false;
 
 }
 

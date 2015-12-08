@@ -193,7 +193,7 @@ function console(id, m)
             message = 'Agent ' + id +' terminates with status alone.Visited by '+chasedAgent.toString(); 
             break;
         case 8:
-            message = 'Agent ' + id +' leaves a mark Join me and terminates with status paired-left';
+            message = 'Agent ' + id +' leaves a mark Join me and terminates with status paired-left,lastSafeNodeForChasedAgent'+chasedAgent[0]+':'+lastVisited[chasedAgent[0]-1];
             break;
         case 9:
             message = 'Agent ' + id +' clears the mark and terminates with status paired-right and paired with '+chasedAgent.toString();

@@ -138,7 +138,9 @@ function initTradeOff()
             
 function initPairing()
 {
-    bases=[2,13,9,22,21,15,3,0,19,20,6,18,17,7,4,12,10,14,16,5];
+    //bases=[2,13,9,22,21,15,3,0,19,20,6,18,17,7,4,12,10,14,16,5];
+    //bases=[2,9,16,3,11,6];
+    //bases=[1,11,12,22];
     for (var i = 0; i < k; i++) 
     {
         var agent = new Agent(nodes[bases[i]], i + 1, 1);
