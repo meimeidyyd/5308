@@ -602,6 +602,7 @@ function lastSafeNode(chase){
 function Elimination(a){
     //需要大改，a.state 不能同时即是 cautious walk的state 又能代表是pairedleft、right ，可以在agent类里多加两个成员
     //alert(a.id+' : '+a.direction);
+    if (agents.length!=k) return;
     var ports= getLinks(a);
     var forward = ports[0],
         backward = ports[1];
@@ -613,58 +614,85 @@ function Elimination(a){
 
 
     var currentPairedBaseIndex=isPairedBase(a);
+    var currentHomeBaseIndex=pairedBases.indexOf(bases[a.id-1]);
     if(a.state==3&&a.next==a.goal){
         a.terminate=true;
+        alert('V is selected and agent '+a.id+' successuflly returns to homebaseV: '+bases[a.id-1]);
     }
-    else if(currentPairedBaseIndex==-1&&a.next==a.goal&&abs(a.state)!=2){
+    else if(currentPairedBaseIndex==-1&&a.next==a.goal&&Math.abs(a.state)!=2){
         a.goal=bases[a.id-1];
         a.state=3;
+        a.direction=-a.direction;
+        alert('agent'+a.id+' reaches to max distance '+'v is selected due to no any homebaseU in this round');
+
     }
-    else if(a.next==a.goal&&abs(a.state)==2){
+    else if(currentPairedBaseIndex==-1&&a.next==a.goal&&Math.abs(a.state)==2){
           if(a.state==-2){
-            pairedBasesRound[isPairedBase(a.goal)]=0;
+            pairedBasesRound[currentHomeBaseIndex]=0;
             a.terminate=true;
+            alert('agent'+a.id+' terminates for case c after agent returns to V');
             //done++;
         }
         if(a.state==2){
-            if(pairedBasesRound[isPairedBase(a.goal)]!=0){
-                pairedBasesRound[isPairedBase(a.goal)]++;
-                a.direction=-a.direction;
+             alert('pairedBasesRound[currentHomeBaseIndex] '+pairedBasesRound[currentHomeBaseIndex]);
+            if(pairedBasesRound[currentHomeBaseIndex]!=0){//if homebase is not eliminated
+                pairedBasesRound[currentHomeBaseIndex]++;//homebase round++
+                a.direction=-a.direction;//for next round setup
                 a.state=0;
+                alert('agent'+a.id+' ready for next round case b after agent returns to V');
             }
+            else{
+                 pairedBasesRound[currentHomeBaseIndex]=0;
+                 a.terminate=true;
+                 alert('agent'+a.id+' terminates for case b after agent returns to V');
+            }
+           
         }
     }
     else if(currentPairedBaseIndex>-1){
-        var currentHomeBaseIndex=bases[a.id-1];
+        
         //case b:
         if(pairedBasesRound[currentPairedBaseIndex]>pairedBasesRound[currentHomeBaseIndex]){
             a.state=-2;
             a.goal=bases[a.id-1];
+            alert('agent'+a.id+" finds u's round"+pairedBasesRound[currentPairedBaseIndex]+" > v's round"+pairedBasesRound[currentHomeBaseIndex]+' case b is ready');
 
         }
         //case c:
         if(pairedBasesRound[currentPairedBaseIndex]==pairedBasesRound[currentHomeBaseIndex]){
+            alert('agent'+a.id+" finds u's round"+pairedBasesRound[currentPairedBaseIndex]+" = v's round"+pairedBasesRound[currentHomeBaseIndex]+' case c is ready');
             a.state=2;
-            pairedBasesRound[currentPairedBaseIndex]=0;
+            pairedBasesRound[currentPairedBaseIndex]=0;//lllllll
             a.goal=bases[a.id-1];
+            
         }
+        // else{
+        //     alert(pairedBasesRound[currentPairedBaseIndex]+' : '+pairedBasesRound[currentHomeBaseIndex]);
+        // }
+
         a.direction=-a.direction;
 
 
 
     }
-    //alert('????????');
+   
     cautiousWalkSimple(a,forward,backward);
 
 
 }
 
 function isPairedBase(a){
-   next=a.next;
-    for (var i = 0; i < pairedBases.length; i++) {
-        if(pairedBases[i]==next&&pairedBases[i]!=bases[a.id-1])return i;
-        else return -1;
-    }
+   //next=a.next;
+   var index=pairedBases.indexOf(a.next);
+   if(index==-1)return index;
+   else if(a.next==bases[a.id-1]) return -1;
+   else return index;
+   
+    // for (var i = 0; i < pairedBases.length; i++) {
+    //     if(pairedBases[i]==next&&pairedBases[i]!=bases[a.id-1])return i;
+        
+    // }
+    // return -1;
 
 }
 

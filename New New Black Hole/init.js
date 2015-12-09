@@ -143,8 +143,8 @@ function initPairing()
     //bases=[2,13,9,22,21,15,3,0,19,20,6,18,17,7,4,12,10,14,16,5];
     //bases=[2,9,16,3,11,6];
     //bases=[1,11,12,22];
-    //bases=[13,1,15,20,4,5,12];
-    //k=7;
+    bases=[13,1,15,20,4,5,12];
+    k=7;
     for (var i = 0; i < k; i++)
     {
         var agent = new Agent(nodes[bases[i]], i + 1, 1);
@@ -165,7 +165,7 @@ stop = false;
 pairedBasesRound=[];
 pairedBases=[];
 k=4;
-alert(k);
+//alert(k);
 done=0;
 var half=Math.floor((n-1)/2);
 
@@ -209,7 +209,7 @@ var half=Math.floor((n-1)/2);
 
     //pause = true;
 
-alert('done');
+//alert('done');
 
 }
 
