@@ -52,8 +52,16 @@ $(document).ready(function () {
         k = Math.floor(Math.random() * (n - 2));
         k = (k < 2) ? 2 : k;
         $('#k').val(k);
-        // set random bases
-        randomAgents();
+        if (algorithm == '3'){
+          if (k < 3) k = 4;
+          if (n < 5){
+            confirm('Number of nodes n must be at least 5.');
+            return;
+          }
+          baseAgents();
+        }else{
+          randomAgents();
+        }
         // generate agents
         initGathering();
     });

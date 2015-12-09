@@ -102,7 +102,16 @@ function checkK()
     }else
     {
         k = num;
-        randomAgents();
+        if (algorithm == '3'){
+          if (k < 3) k = 4;
+          if (n < 5){
+            confirm('Number of nodes n must be at least 5.');
+            return;
+          }
+          baseAgents();
+        }else{
+          randomAgents();
+        }
     }
 };
 

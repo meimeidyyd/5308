@@ -326,6 +326,15 @@ function checkCollision()
 
 }
 
+function baseAgents()
+{
+    bases = [];
+    for (var i = 0;i < k; i++ )
+    {
+        bases.push(0);
+    }
+}
+
 function randomAgents()
 {
     bases = [];
