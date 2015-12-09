@@ -301,7 +301,7 @@ function checkCollision()
 
             agents[i].move();
             if (algorithm == '3'){
-              if (agents[i].next != lastVisit){
+              if (agents[i].state != 4 && (agents[i].next != lastVisit)){
                   lastVisit = agents[i].next;
                   add = true;
               }
