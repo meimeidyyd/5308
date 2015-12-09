@@ -60,7 +60,7 @@ function Agent(p, Id, d)
         {
         //  algorithm Devide
         case "1":
-                Divide1(a);
+                Divide(a);
                 break;
 
         //  algorithm OptTime

@@ -186,7 +186,7 @@ function empty()
 function console(id, m)
 {
     var message = 0;
-    //consoleCount++;
+    consoleCount++;
     switch (m)
     {
         case 1:
@@ -220,7 +220,7 @@ function console(id, m)
             message = 'Agent ' + id.id +' begin to chase agent '+(id.chasing+1)+ ' lastSafeNodeForChasedAgent '+lastVisited[id.chasing];
             break;
     }
-    $('#conArea').append((consoleCount++) + ')\n' + message + '.\n');
+    $('#conArea').append((consoleCount) + ')\n' + message + '.\n');
 }
 
  function printf(){

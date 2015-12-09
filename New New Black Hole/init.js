@@ -57,44 +57,44 @@ function init()
 }
 
 
-// function initDivide()
-// {
-//     k = 2;
-//     var right = Math.floor(n / 2);
-//     var left  = right + 1;
-//     var max = n - 1;
-//     nodeV.left = left;
-//     nodeV.right = right;
-//     getSegments(0);
-//     for (var i = 0; i < k; i++)
-//     {
-//         var a = new Agent(nodes[0], i + 1, i ? 1 : -1);
-//         a.goal = i ? right : left;
-//         agents.push(a);
-//         agents[i].move();
-//     }
-// }
-
 function initDivide()
 {
     k = 2;
-    // var right = Math.floor(n / 2);
-    // var left  = right + 1;
-    // var max = n - 1;
-    // nodeV.left = left;
-    // nodeV.right = right;
-    // getSegments(0);
-    initSegments();
-    divideSegments(k,U[0]);
+    var right = Math.floor(n / 2);
+    var left  = right + 1;
+    var max = n - 1;
+    nodeV.left = left;
+    nodeV.right = right;
+    getSegments(0);
     for (var i = 0; i < k; i++)
     {
-        var a = new Agent(nodes[0], i + 1, i ? -1 : 1);
-        a.goal = a.direction>0 ? U[0][S[0][1]] : U[0][S[1][0]];
+        var a = new Agent(nodes[0], i + 1, i ? 1 : -1);
+        a.goal = i ? right : left;
         agents.push(a);
         agents[i].move();
     }
-
 }
+
+// function initDivide()
+// {
+//     k = 2;
+//     // var right = Math.floor(n / 2);
+//     // var left  = right + 1;
+//     // var max = n - 1;
+//     // nodeV.left = left;
+//     // nodeV.right = right;
+//     // getSegments(0);
+//     initSegments();
+//     divideSegments(k,U[0]);
+//     for (var i = 0; i < k; i++)
+//     {
+//         var a = new Agent(nodes[0], i + 1, i ? -1 : 1);
+//         a.goal = a.direction>0 ? U[0][S[0][1]] : U[0][S[1][0]];
+//         agents.push(a);
+//         agents[i].move();
+//     }
+
+// }
 
 
 

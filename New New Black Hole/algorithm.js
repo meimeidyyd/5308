@@ -34,7 +34,7 @@ function Divide(a)
         a.goal = left + 1 - a.id;
 
         E[a.id - 1][2 - a.id] = a.next;
-        whiteBoard(a.id, a.next, left, right);
+        whiteBoard(a, a.next, left, right);
         // check if the algorithm terminates
         if(E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
         {
@@ -529,7 +529,8 @@ function Pairing1(a){
 
         //alert(a.id+' : '+agents[a.chasing].id+' : '+lastSafeNode(a.chasing)+' : '+lastVisited[a.chasing]);
         //alert(a.id+' :chaising '+agents[chasedAgent].id +' lastsafenode: '+lastSafeNode(a.chasing)+' a.chasing.direction: '+agents[a.chasing].direction+' agents[a.chasing].state: '+agents[a.chasing].state);
-        if(a.next==lastSafeNode(a.chasing)){
+        //if(a.next==lastSafeNode(a.chasing)){ linkStates['forward']==1
+        if(linkStates[forward]==1){ 
         //step3
             a.joinme=true;
             a.terminate=true;
