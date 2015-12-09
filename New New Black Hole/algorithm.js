@@ -5,7 +5,7 @@ function Divide(a)
     {
         return;
     }
-    
+
     var getlinks = getLinks(a);
     var linkForward = getlinks[0];
     var forward = linkStates[linkForward];
@@ -16,7 +16,7 @@ function Divide(a)
         a.stage++;
         a.direction = - a.direction;
 
-        
+
         unexplored = (a.id === 2) ?  - nodeV.right + a.next - 1 : nodeV.left - a.next - 1;
         unexplored = unexplored < 0 ? unexplored + n :unexplored;
 
@@ -26,14 +26,14 @@ function Divide(a)
         //when nodeV is at homebase
         if (!a.next && a.id === 2)
         {
-            left += n;    
+            left += n;
         }
 
         left = Math.floor(left / 2) + 1;
         var right = left - 1;
         a.goal = left + 1 - a.id;
-        
-        E[a.id - 1][2 - a.id] = a.next; 
+
+        E[a.id - 1][2 - a.id] = a.next;
         whiteBoard(a.id, a.next, left, right);
         // check if the algorithm terminates
         if(E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
@@ -45,14 +45,14 @@ function Divide(a)
 }
 
 
-function OptTime(a) 
+function OptTime(a)
 {
     if (a.goal === a.next)
     {
         a.direction = - a.direction;
         if (a.stage === 1)
         {
-            // node i + 1 is -(n - i - 1) in the inverse direction      
+            // node i + 1 is -(n - i - 1) in the inverse direction
             a.goal = (a.id + 1 ) % n;
             a.stage++;
 
@@ -86,7 +86,7 @@ function TradeOff(a)
         done++;
         return;
     }
-    
+
     // notify agents at the right side
     if (a.state === 4 && a.stage === 3)
     {
@@ -100,10 +100,10 @@ function TradeOff(a)
         notify(a, 1);
         a.goal  = S[a.id - 3][0];
         var goal = a.goal ? a.goal : n;
-        a.state = 3;   
+        a.state = 3;
         a.stage = 1;
-    } 
-    
+    }
+
     if (a.goal === a.next && a.state === 3)
     {
         // have checked both sides,then move left notify other nodes
@@ -114,7 +114,7 @@ function TradeOff(a)
             var left    = S[a.id - 3][0];
             var right   = S[a.id - 3][1];
             if (a.next)
-            {   
+            {
                 right = a.next < right ? a.next : right;
             }
             // find the black hole
@@ -134,17 +134,20 @@ function TradeOff(a)
             a.stage++;
             a.direction = - 1;
         }
-        
+
     }
     if (a.id < 3)
     {
        cautiousWalk(a);
     }else{
        chase(a);
+       if (a.state != 4){
+         moves++;
+       }
     }
 }
 
-            
+
 function Pairing(a)
 {
     if (chase(a))
@@ -164,7 +167,7 @@ function Gathering(a)
     {
        cautiousWalk(a);
     }
-    
+
     if (a.state === 4)
     {
         if (gatherCount === k - 1)
@@ -192,50 +195,50 @@ function chase(a)
     var forward = linkStates[linkForward],
         backward = linkStates[linkBackward];
 
-    
+
     // find forward link becomes safe,then continue to chase
     if (a.state === 4 && forward === 2)
     {
         a.state = 3;
         if (algorithm === '6')
-        {   
+        {
             gatherCount--;
         }
     }
-    
-    
+
+
     // find the node has been explored by other
     if (a.state === 1 && backward === 2 && forward)
     {
-        a.state = 3;     
+        a.state = 3;
     }
-    
-    
-    // stop chasing when the link is not safe 
+
+
+    // stop chasing when the link is not safe
     if (a.state === 3 && forward === 1)
     {
         if (algorithm === '3')
         {
-            a.state = 4; 
+            a.state = 4;
         }
-        // terminate and become paired-left or alone 
+        // terminate and become paired-left or alone
         else if (algorithm === '4')
         {
             a.terminate = true;
             done++;
         }
         else if (algorithm === '6')
-        {   
+        {
             a.state = 4;
             gatherCount++;
         }
     }
-    
+
     if (a.state > 2){
         return false;
     }
     return true;
-    
+
 }
 
 function cautiousWalk(a)
@@ -249,8 +252,8 @@ function cautiousWalk(a)
     moves++;
     // $('#moves').val(moves);
 
-    
-    // have not started / have not reach the goal 
+
+    // have not started / have not reach the goal
     if (!a.state  || (a.next != a.goal && a.state === 1 && !forward && backward === 2))
     {
         a.state = 1;
@@ -259,19 +262,19 @@ function cautiousWalk(a)
         linkStates[linkForward] = 1;
         return true;
     }
-    
-    // make the explored link safe 
+
+    // make the explored link safe
     if (backward === 1 && a.state > 1)
     {
         links[linkBackward].strokeStyle = "#00ff00";
         linkStates[linkBackward] = 2;
     }
-    
+
     // check if the algorithm terminates
     if (algorithm === '1')
     {
         if (forward  && backward)
-        { 
+        {
             // check if the algorithm terminates
             if (E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
             {
@@ -286,7 +289,7 @@ function cautiousWalk(a)
             done++;
         }
     }
-    
+
     // when it is forwarding
     if (a.state === 1)
     {
@@ -294,7 +297,7 @@ function cautiousWalk(a)
         {
             a.state = 2;
         }
-        
+
         if (algorithm === '1')
         {
             // complete my work this round
@@ -311,18 +314,18 @@ function cautiousWalk(a)
                 return true;
             }
         }
-        
+
         if (backward != 2)
         {
             a.direction = - a.direction;
         }
     }
-    // return 
+    // return
     else if (a.state === 2)
     {
         a.state = 1;
         a.direction = - a.direction;
-        
+
         if (algorithm === '1')
         {
             // read message from the white board
@@ -342,7 +345,7 @@ function cautiousWalk(a)
 
 function notify(a, t)
 {
-    for (var i = 2; i < k; i++) 
+    for (var i = 2; i < k; i++)
     {
         if (!t && i === a.id - 1)
         {
@@ -360,7 +363,7 @@ function notify(a, t)
                 }else{
                     agents[i].direction = 1;
                 }
-                
+
             }
             agents[i].stage = 1;
             agents[i].state = 3;
@@ -376,26 +379,26 @@ function notify(a, t)
 function cautiousWalkSimple(a,forward,backward){
     moves++;
     // $('#moves').val(moves);
-   
+
     if(a.state===0 && linkStates[forward]===0 ){//如果 agent的状态是：准备探索 并 forwardport的状态是 danger
         links[forward].width = 5;
         links[forward].strokeStyle = "#ffcc00";//我们就把forwardport的颜色变成黄色
         linkStates[forward] = 1;//forwardport的状态变成 探索中
         a.state=1;
-        
+
         return;
-        
+
     }
-    
+
     if(a.state===1 && linkStates[backward]===1){//如果 agent的状态是：探索中 并 backwardport的状态是 探索中
         links[backward].width = 5;
         links[backward].strokeStyle = "#00ff00";//我们就把backwardport的颜色变成绿色
         linkStates[backward] = 2;//backwardport的状态变成 安全
         a.direction = -a.direction;
         a.state=-1;
-        
+
         return;
-        
+
     }
     // if(a.state===1 && linkStates[forward]===2){//如果 agent的状态是：探索中 并 forwardport的状态是 安全
     //     links[forward].width = 5;
@@ -403,11 +406,11 @@ function cautiousWalkSimple(a,forward,backward){
     //     a.direction = -a.direction;
     //     return;
     // }
-  if(a.state===-1){//如果 agent的状态是：临时返回 
+  if(a.state===-1){//如果 agent的状态是：临时返回
         links[forward].width = 5;
         a.state=0;
         a.direction = -a.direction;
-        
+
         return;
     }
 
@@ -423,7 +426,7 @@ function Divide1(a){
         // 当a返回到nodeV时,a.direction指向有黑洞的segment
         // 如果 a.direction==1   正方向 从最小到中间 S[0][0] - S[0][1]
         //                      反方向 从中间到最大 S[1][0] - S[1][1]
-       
+
 
         var rangeWithBlackHole=a.direction>0 ? 0 : 1 ;
         var from=a.direction>0 ? 0 : 1;
@@ -436,20 +439,20 @@ function Divide1(a){
         // 如果不在当前黑洞的segment里说明已经不走了被黑洞吃了,offset则为0
 
         var offset=U[currentRound].slice(S[rangeWithBlackHole][0],S[rangeWithBlackHole][1]+1).indexOf(a.next) > -1 ? Math.abs(a.next-U[currentRound][S[rangeWithBlackHole][from]])+1 : 0;
-        
+
         //alert(U[currentRound][S[rangeWithBlackHole][from]]+' : '+S[rangeWithBlackHole]+' : '+from);
         //alert(a.next+' :rangeWithBlackHole='+U[currentRound].slice(S[rangeWithBlackHole][0],S[rangeWithBlackHole][1]+1)+' : '+offset);
         S[rangeWithBlackHole][from]+=offset*a.direction;
         //alert('newrange : '+U[currentRound].slice(S[rangeWithBlackHole][0],S[rangeWithBlackHole][1]+1));
-        
+
         // push更新新的unexplored 集合U
         U.push(U[currentRound].slice(S[rangeWithBlackHole][0],S[rangeWithBlackHole][1]+1));
         currentRound+=1;
         console(a,3);
         // 如果|U|只剩下1
-        if(U[currentRound].length===1){ 
+        if(U[currentRound].length===1){
             a.direction=-a.direction;
-            a.state=3;  
+            a.state=3;
 
         }
         //分段进入下一轮
@@ -459,17 +462,17 @@ function Divide1(a){
             a.direction=-a.direction;
             a.goal = (a.direction>0) ? U[currentRound][S[0][1]] : U[currentRound][S[1][0]];
             //alert(a.direction+' : '+a.goal);
-            
+
             a.state=0;
         }
     }
     if(a.next===0&&a.state===3){
         //终结状态
         console(a.id,2);
-        
+
         done++;
         return;
-        
+
     }
     if(a.next===a.goal && linkStates[backward]===1){//agents走到segment的最尾端，从a.goal返回到nodeV
         a.direction=-a.direction;
@@ -478,7 +481,7 @@ function Divide1(a){
         linkStates[backward] = 2;//backwardport的状态变成 安全
         //$('#conArea').append('id='+a.id+' a.state='+a.state+' a.next='+a.next+' forward='+forward+' backward='+backward+' fstate='+linkStates[forward]+' bstate='+linkStates[backward]+' direction='+a.direction+' goal='+a.goal+'\n');
     }
-   
+
     cautiousWalkSimple(a,forward,backward);
 
 }
@@ -490,7 +493,7 @@ function Pairing1(a){
         backward = ports[1];
     var nodeVisited=0;
     chasedAgent=[];
-   
+
 
 //step1:
     //1. If an agent reaches a node visited by another agent b, it becomes chasing, and follows
@@ -510,7 +513,7 @@ function Pairing1(a){
                 nodeVisited++;
                 //if(a.id==16&&(i==1||i==17)){alert(agents[1].next+' : '+agents[17].next+' : '+a.next+' : '+(i+1));}
                 chasedAgent.push(i+1);
-                
+
 
             }
         }
@@ -521,9 +524,9 @@ function Pairing1(a){
         //step1 continued
         //if(a.chasing==-1){
             a.chasing=chasedAgent[0]-1;
-            
+
             //}
-        
+
         //alert(a.id+' : '+agents[a.chasing].id+' : '+lastSafeNode(a.chasing)+' : '+lastVisited[a.chasing]);
         //alert(a.id+' :chaising '+agents[chasedAgent].id +' lastsafenode: '+lastSafeNode(a.chasing)+' a.chasing.direction: '+agents[a.chasing].direction+' agents[a.chasing].state: '+agents[a.chasing].state);
         if(a.next==lastSafeNode(a.chasing)){
@@ -532,7 +535,7 @@ function Pairing1(a){
             a.terminate=true;
             done++;
             a.state=-5;
-            
+
             //alert(a.id+' :paired-left with '+agents[a.chasing].id+' a.next:'+a.next);
             console(a.id,8);
 
@@ -542,7 +545,7 @@ function Pairing1(a){
     }
 
 
-    //step2   
+    //step2
     if(nodeVisited>1){
             a.terminate=true;
             done++;
@@ -553,7 +556,7 @@ function Pairing1(a){
 
     //step1,a.chasing==-1 是初始化值，代表不chasing
     if(a.chasing==-1){
-     
+
         for(var i=0;i<agents.length;i++){
             if(agents[i].id!=a.id){
                 if(agents[i].next==a.next&&agents[i].joinme){
@@ -562,7 +565,7 @@ function Pairing1(a){
                     console(a.id,9);
                     a.state=5;//paired-right
                     agents[i].joinme=false;
-                    
+
                     a.terminate=true;
                     done++;
                     return;
@@ -571,17 +574,17 @@ function Pairing1(a){
             }
 
         }
-      
+
     }
-    
+
  cautiousWalkSimple(a,forward,backward);
 
-    
+
 }
 
 
 // function lastSafeNode(id){
-//   return lastVisited[id];    
+//   return lastVisited[id];
 // }
 
 function lastSafeNode(chase){
@@ -646,14 +649,14 @@ function Elimination(a){
             a.goal=bases[a.id-1];
         }
         a.direction=-a.direction;
-        
-        
+
+
 
     }
     //alert('????????');
     cautiousWalkSimple(a,forward,backward);
 
-  
+
 }
 
 function isPairedBase(a){
@@ -683,5 +686,3 @@ function isVisited(current,start, end){
     return false;
 
 }
-
-

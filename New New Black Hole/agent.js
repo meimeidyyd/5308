@@ -1,5 +1,5 @@
 //------------------------- Set Agents-------------------------
-function Agent(p, Id, d) 
+function Agent(p, Id, d)
 {
     this.x          = p.x;
     this.y          = p.y;
@@ -22,15 +22,15 @@ function Agent(p, Id, d)
     /*  1.Devide:    state: 0 : init, 1 : explore, 2 : return ,3 : go to v
         4.Pairing:   state: 0 : init, 1 : explore, 2 : return ,3 : chase, 5 : become paired-left or alone
         6.Gathering: state: 0 : init, 1 : explore, 2 : return ,3 : chase, 4 : stay and check
-    
+
     */
     this.state      = 0;
     this.report     = false;
-    
-    
-   this.draw = function () 
+
+
+   this.draw = function ()
     {
-        if(algorithm==3 && this.id<=2){ 
+        if(algorithm==3 && this.id<=2){
             context.fillStyle = this.fillStyle;
             context.beginPath();
             context.arc(this.x, this.y, this.radius,  0, 2 * Math.PI, true);
@@ -47,7 +47,7 @@ function Agent(p, Id, d)
         var a = agents[this.id - 1];
         if (this.vanish)
         {
-            return;   
+            return;
         }else if (this.report && !this.next)
         {
             checkLastLink(a);
@@ -55,42 +55,42 @@ function Agent(p, Id, d)
             console(this.id, 2);
             done++;
             return;
-        } 
+        }
         switch (algorithm)
         {
         //  algorithm Devide
         case "1":
                 Divide1(a);
                 break;
-                
+
         //  algorithm OptTime
         case "2":
                 OptTime(a);
-                break;         
+                break;
         case "3":
                 TradeOff(a);
                 break;
-            
+
         case "4":
                 Pairing1(a);
                 break;
-        
+
         case "5":
                 Elimination(a);
                 break;
-            
+
         case "6":
                 Gathering(a);
                 break;
-            
+
         case "7":
                 Bod(a);
         }
 
-        
+
     }
-    
-    this.move = function () 
+
+    this.move = function ()
     {
         this.doAlgorithm();//change goal state direction
         // it stays
@@ -102,13 +102,13 @@ function Agent(p, Id, d)
         if(!this.terminate){
         var current = this.next;
         var next    = current + this.direction;//update next position of id
-        
+
         if (next < 0)
         {
-            this.next = n - 1;        
+            this.next = n - 1;
         }else if (next > n - 1)
         {
-            this.next = 0;        
+            this.next = 0;
         }else{
             this.next = next;
         }
@@ -116,12 +116,12 @@ function Agent(p, Id, d)
         positionChange[this.id - 1] = p;
     }
     }
-    
+
     // return 0 - n-1 if it meets a node, otherwise it returns -1
-    this.collision = function() 
+    this.collision = function()
     {
         var p = nodes[this.next];
-        if (Math.abs(p.x - this.x) < 0.1  &&  Math.abs(p.y - this.y)< 0.1) 
+        if (Math.abs(p.x - this.x) < 0.1  &&  Math.abs(p.y - this.y)< 0.1)
         {
             if (this.next === blackHole)
             {
@@ -138,7 +138,7 @@ function Agent(p, Id, d)
         }
         return 0;
     }
-    
+
 }
 
 
@@ -152,16 +152,16 @@ function moveAgents()
     {
         return;
     }
-    
+
     // draw agents with text
     // context.font = nodes[0].radius + "px Arial";
 
-    // for (var i = 0; i < agents.length; i++) 
+    // for (var i = 0; i < agents.length; i++)
     // {
     //     var ai = agents[i];
     //     if (ai.vanish)
     //     {
-    //         continue;        
+    //         continue;
     //     }
     //     if (!ai.terminate)
     //     {
@@ -179,11 +179,11 @@ function moveAgents()
 
     //         if (ai.imageX >= 150) ai.imageX = 0;
     //         else ai.imageX += 50;
-            
-            
-        
+
+
+
     //     }
-    //     //  draw agents 
+    //     //  draw agents
     //     agents[i].draw(context);
     //     // set the text at the center of the nodes
     //     var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6)+35;
@@ -207,11 +207,11 @@ function moveAgents()
                 temp[j]=-1;
             }
         }
-           
+
         moveAgents1(results);
-         
+
     }
-        
+
 }
 
 
@@ -219,10 +219,10 @@ function drawAgents()
 {
     // draw agents with text
     context.font = nodes[0].radius + "px Arial";
-    for (var i = 0; i < agents.length; i++) 
+    for (var i = 0; i < agents.length; i++)
     {
         var ai = agents[i];
-        //  draw agents 
+        //  draw agents
         agents[i].draw(context);
         // set the text at the center of the nodes
         var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6)+35;
@@ -238,12 +238,12 @@ function moveAgents1(a){
     context.font = nodes[0].radius + "px Arial";
     var offset=35;
 
-    for (var i = 0; i < a.length; i++) 
+    for (var i = 0; i < a.length; i++)
     {
         var ai = agents[a[i]];
         if (ai.vanish)
         {
-            continue;        
+            continue;
         }
         if (!ai.terminate)
         {
@@ -259,15 +259,15 @@ function moveAgents1(a){
                 if(ai.direction==1) ai.imageY = 60;
             }
 
-            if (ai.imageX >= 150) ai.imageX = 0;
+            if (ai.imageX >= 100) ai.imageX = 0;
             else {
                 if(timer%15==0)ai.imageX += 50;
             }
-            
-            
-        
+
+
+
         }
-        //  draw agents 
+        //  draw agents
         agents[a[i]].draw(context);
         // set the text at the center of the nodes
         var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6)+offset;
@@ -281,15 +281,16 @@ function moveAgents1(a){
 }
 
 
-function checkCollision() 
+function checkCollision()
 {
     var temp=false;
-    for (var i = 0; i < agents.length; i++) 
+    var tempMoves=moves;
+    for (var i = 0; i < agents.length; i++)
     {
         // If the agent vanishes or terminates.do not check
         if (agents[i].vanish || agents[i].terminate)
         {
-            continue;        
+            continue;
         }
         // if there is a collision
 
@@ -298,46 +299,51 @@ function checkCollision()
             temp=true;
 
             agents[i].move();
-            
+
 
         }
         $('#moves').val(moves);
 
     }
     if(temp){
-        idealtime++;
-    $('#idealtime').val(idealtime);
+        if (algorithm != '3'){
+          idealtime++;
+        }else if (algorithm == '3' && tempMoves < moves){
+          idealtime++;
+          alert(idealtime);
+        }
+        $('#idealtime').val(idealtime);
     }
-    
 
-    
+
+
 }
 
 function randomAgents()
-{   
+{
     bases = [];
-    var a, b, i = 0, c = n; 
+    var a, b, i = 0, c = n;
     var r = [];
     while(i < c)
     {
         r[i] = i;
         i++;
     }
-    // generate a ramdom array       
+    // generate a ramdom array
     while (c)
     {
         a = c-1;
         b = Math.floor(Math.random() * c);
         c--;
         if (a == b)
-        { 
+        {
             continue;
         }
         r[a] ^= r[b];
         r[b] ^= r[a];
         r[a] ^= r[b];
     }
-    
+
     for (i = 0, c = -1; i < k; )
     {
         c++;
@@ -350,7 +356,7 @@ function randomAgents()
     }
 }
 
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 

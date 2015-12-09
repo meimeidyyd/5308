@@ -1,12 +1,12 @@
-$(document).ready(function () { 
-    
+$(document).ready(function () {
+
     drawGraph(1);
-    
+
     $('#draw').click(function () {
         checkN();
         enableButtons();
     });
-     
+
     $('#start').click(function () {
         if (!n)
         {
@@ -27,24 +27,24 @@ $(document).ready(function () {
             refreshFrame();
         }
     });
-    
+
     $('#stop').click(function () {
         enableButtons();
         drawGraph(1);
         $('#moves').val('');
         $('#idealtime').val('');
-        
+
 
 
     });
-    
+
     $('#create').click(function () {
         enableButtons();
         drawGraph(1);
         checkK();
         initGathering();
     });
-    
+
     $('#random').click(function () {
         enableButtons();
         drawGraph(1);
@@ -57,21 +57,21 @@ $(document).ready(function () {
         // generate agents
         initGathering();
     });
-    
+
     $('#size').change(function() {
         done = k;
         drawGraph(1);
     });
-    
+
     $('#speedBar').change(function() {
         changeSpeed();
     });
-    
+
     $('#addLabels').click(function() {
         addLabels = !addLabels;
         drawGraph(1);
     });
-    
+
     $('#selectAlgorithm').change(function() {
         algorithm = $(this).val();
         if(algorithm=='5')return;
@@ -79,7 +79,7 @@ $(document).ready(function () {
         enableButtons();
         drawGraph(1);
     });
-    
+
     $('.buttons').mouseenter(function () {
         $(this).fadeTo('fast', 0.6);
     });
@@ -87,7 +87,7 @@ $(document).ready(function () {
     $('.buttons').mouseleave(function () {
         $(this).fadeTo('fast', 1);
     });
-    
+
 });
 
 
@@ -108,20 +108,20 @@ function disableButtons()
 function enableButtons()
 {
     stop = true;
-    if(algorithm!='4'){
+    if(algorithm!='4' && algorithm!='5'){
         agents = [];
         k = 0;
         enableAgents();
 
     }
-    
+
     $('#start').text('Start');
     $('#random').removeAttr('disabled');
     $('#size').removeAttr('disabled');
     $('#addLabels').removeAttr('disabled');
-   
+
     $('#selectAlgorithm').removeAttr('disabled');
-    
+
 }
 
 function disableAgents()
