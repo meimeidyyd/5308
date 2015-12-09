@@ -1,18 +1,18 @@
 //------------------------- Set Nodes-------------------------
-function node(p, r) 
+function node(p, r)
 {
     this.x      = p.x;
     this.y      = p.y;
     this.radius = r;
     this.fillStyle = "#eeeeee";
-    this.draw = function () 
+    this.draw = function ()
     {
         context.fillStyle = "#000000";
         context.beginPath();
         context.arc(this.x, this.y, this.radius + 2,  0, 2 * Math.PI, true);
         context.closePath();
         context.fill();
-        
+
         context.fillStyle = this.fillStyle;
         context.beginPath();
         context.arc(this.x, this.y, this.radius,  0, 2 * Math.PI, true);
@@ -21,8 +21,7 @@ function node(p, r)
     }
 }
 
-
-function setNodes() 
+function setNodes()
 {
     // set (x,y) as the center of the graph
     var x          = 425;
@@ -30,7 +29,7 @@ function setNodes()
     // set the size of the graph
     var size       = 130 + 1.5 * $('#size').val();
     var r          = 20 + size / 40 -  Math.floor(n / 6);
-    // a is to tranform the graph to fit the suitable height and width 
+    // a is to tranform the graph to fit the suitable height and width
     var a           = x / y;
     for(var i = 0; i < n; i++)
     {
