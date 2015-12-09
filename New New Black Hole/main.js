@@ -9,8 +9,8 @@ function drawGraph(type)
         setLinks();
         switch (type)
         {
-        case 1: 
-                
+        case 1:
+
                 break;
         // generate a random blackHole which is not the base
         case 2:
@@ -23,26 +23,26 @@ function drawGraph(type)
             nodes[base].fillStyle = 'orange';
         }
     }
-    
+
     // draw links first
-    for (var i = 0; i < links.length; i++) 
+    for (var i = 0; i < links.length; i++)
     {
         links[i].draw();
     }
-    
-    
-    for (var i = 0; i < nodes.length; i++) 
+
+
+    for (var i = 0; i < nodes.length; i++)
     {
         //  draw vertices
         nodes[i].draw(context);
     }
-    
+
     // set the text at the center of the nodes
     if  (addLabels)
     {
         // draw nodes with text
         context.font = nodes[0].radius + "px Arial";
-        for (var i = 0; i < nodes.length; i++) 
+        for (var i = 0; i < nodes.length; i++)
         {
             var ni = nodes[i];
             var x = ni.x - (i > 9 ? ni.radius / 1.8 : ni.radius / 3.6);
@@ -61,10 +61,10 @@ function checkN()
     var num = $('#n').val();
     var reg= /^[0-9]*$/;
     // check if the value is a number in [3,100]
-    if(!reg.test(num) || num < 3 || num > 100) 
+    if(!reg.test(num) || num < 3 || num > 100)
     {
         confirm("Please input an integer between 3 and 100.");
-    }else 
+    }else
     {
         n = num;
         drawGraph(2);
@@ -96,10 +96,10 @@ function checkK()
     var num = $('#k').val();
     var reg= /^[0-9]*$/;
     // check if the value is a number in [3,100]
-    if(!reg.test(num) || num < 2 || num > n - 1) 
+    if(!reg.test(num) || num < 2 || num > n - 1)
     {
         confirm("Agent number k should be between 2 and n - 1.");
-    }else 
+    }else
     {
         k = num;
         randomAgents();
@@ -119,16 +119,16 @@ function changeSpeed()
 
 
 // compute the position change from A to B
-function moveAB(A, B) 
+function moveAB(A, B)
 {
-    // return position changes per frame when an agent moves from A to B 
+    // return position changes per frame when an agent moves from A to B
     return [(B.x - A.x) / speed, (B.y - A.y) / speed];
 }
 
 
 
 // refresh the position of agents in each frame
-function refreshFrame () 
+function refreshFrame ()
 {
     if (done == k)
     {
@@ -173,10 +173,10 @@ function console(id, m)
     {
         case 1:
             message = 'Agent ' + id +' discovers the black hole';
-            break;         
+            break;
         case 2:
             message = 'Agent ' + id +' reports to the base that the black hole is at node ' + blackHole + ' (algorithm terminates)';
-            break;  
+            break;
         case 3:
             message = 'Agent ' + id.id +' writes on the white board of node ' + id.next;
             break;
@@ -190,7 +190,7 @@ function console(id, m)
             message = 'Agent ' + id.id +' notifies other nodes at ' + id.next + ' to start the new round';
             break;
         case 7:
-            message = 'Agent ' + id +' terminates with status alone.Visited by '+chasedAgent.toString(); 
+            message = 'Agent ' + id +' terminates with status alone.Visited by '+chasedAgent.toString();
             break;
         case 8:
             message = 'Agent ' + id +' leaves a mark Join me and terminates with status paired-left,lastSafeNodeForChasedAgent'+chasedAgent[0]+':'+lastVisited[chasedAgent[0]-1];

@@ -114,6 +114,7 @@ function initOptTime()
 function initTradeOff()
 {
     getSegments(0);
+    lastVisit = -1;
     for (var i = 0; i < k; i++)
     {
         var a = new Agent(nodes[0], i + 1, i ? 1 : -1);

@@ -285,6 +285,7 @@ function checkCollision()
 {
     var temp=false;
     var tempMoves=moves;
+    var add = false;
     for (var i = 0; i < agents.length; i++)
     {
         // If the agent vanishes or terminates.do not check
@@ -299,18 +300,24 @@ function checkCollision()
             temp=true;
 
             agents[i].move();
-
-
+            if (algorithm == '3'){
+              if (agents[i].next != lastVisit){
+                  lastVisit = agents[i].next;
+                  add = true;
+              }
+            }
         }
         $('#moves').val(moves);
-
     }
+
     if(temp){
         if (algorithm != '3'){
           idealtime++;
         }else if (algorithm == '3' && tempMoves < moves){
-          idealtime++;
-          alert(idealtime);
+          if (add){
+            idealtime++;
+          }
+        //  alert(idealtime);
         }
         $('#idealtime').val(idealtime);
     }

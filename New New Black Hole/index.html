@@ -21,7 +21,7 @@
             <div id="side">
                 <div id="drawGraph">
                     <div class="title">
-                        Generate a Graph 
+                        Generate a Graph
                     </div>
                     <table>
                         <tr>
@@ -47,7 +47,7 @@
                 </div>
                 <div id="setAgents">
                     <div class="title" style="width:80">
-                        &nbsp;Agents 
+                        &nbsp;Agents
                     </div>
                     <table>
                         <tr>
@@ -71,7 +71,7 @@
                 <div id="doAlgorithm">
                     <div class="title">
                         Perform Algorithms&nbsp;
-                        
+
                     </div>
                     <table>
                         <tr style="height:42">
@@ -115,7 +115,7 @@
                 </div>
             </div>
         </div>
-	</body> 
+	</body>
    <script>
         var n           =  24;
         var nodes       =  [],
@@ -125,7 +125,7 @@
         // number of agents
         var k           = 0;
         var context     = document.getElementById("canvas").getContext("2d");
-        var addLabels   = true,      
+        var addLabels   = true,
             refreshRate = 60,
             speed       = refreshRate / 3,
             pause       = false,
@@ -143,6 +143,7 @@
         //var EX          = [];
         var S           = [];
         var unexplored  = n - 1;
+        var lastVisit   = -1;
         var gatherCount = 0;
         // link state = 0 : unexplored,1 : active, 2 : safe
         var linkStates  = [];
@@ -159,4 +160,3 @@
     </script>
 
 </html>
-
