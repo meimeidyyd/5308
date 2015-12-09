@@ -101,6 +101,15 @@ function checkK()
         confirm("Agent number k should be between 2 and n - 1.");
     }else
     {
+        if (algorithm == '1'){
+            k = 2;
+            baseAgents();
+            return;
+        }else if (algorithm == '2'){
+            k = n - 1;
+            baseAgents();
+            return;
+        }
         k = num;
         if (algorithm == '3'){
           if (k < 3) k = 4;

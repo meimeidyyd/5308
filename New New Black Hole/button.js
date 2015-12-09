@@ -48,20 +48,28 @@ $(document).ready(function () {
     $('#random').click(function () {
         enableButtons();
         drawGraph(1);
-        // get a valid number of k
-        k = Math.floor(Math.random() * (n - 2));
-        k = (k < 2) ? 2 : k;
-        $('#k').val(k);
-        if (algorithm == '3'){
-          if (k < 3) k = 4;
-          if (n < 5){
-            confirm('Number of nodes n must be at least 5.');
-            return;
-          }
-          baseAgents();
+        if (algorithm == '1'){
+            k = 2;
+            baseAgents();
+        }else if (algorithm == '2'){
+            k = n - 1;
+            baseAgents();
         }else{
-          randomAgents();
+          // get a valid number of k
+          k = Math.floor(Math.random() * (n - 2));
+          k = (k < 2) ? 2 : k;
+          if (algorithm == '3'){
+            if (k < 3) k = 4;
+            if (n < 5){
+              confirm('Number of nodes n must be at least 5.');
+              return;
+            }
+            baseAgents();
+          }else{
+            randomAgents();
+          }
         }
+        $('#k').val(k);
         // generate agents
         initGathering();
     });
