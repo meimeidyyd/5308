@@ -44,7 +44,7 @@ function Agent(p, Id, d)
 
     this.doAlgorithm = function ()
     {
-        var a = this;
+        var a = agents[this.id - 1];
         if (this.vanish)
         {
             return;
@@ -193,14 +193,14 @@ function moveAgents()
     //     context.fillText(i + 1, x, y);
     // }
     var temp=[];
-    for(var i=0;i<agents.length;i++){
+    for(var i=0;i<k;i++){
         temp.push(agents[i].next);
     }
     var unique=[];
     unique= temp.filter( onlyUnique );
     for (var i=0;i<unique.length;i++) {
         var results= [];
-        for (var j=0;j<agents.length;j++){
+        for (var j=0;j<k;j++){
             if(temp[j]==-1)continue;
             if(unique[i]==temp[j]){
                 results.push(j);
@@ -229,7 +229,7 @@ function drawAgents()
         var y = ai.y + ai.radius / 3;
         // set black hole node text with different color
         context.fillStyle = "#ff0000";
-        context.fillText(this.id, x, y);//content,x axis,y axis
+        context.fillText(i + 1, x, y);//content,x axis,y axis
     }
 }
 
@@ -247,7 +247,7 @@ function moveAgents1(a){
         }
         if (!ai.terminate)
         {
-            var p  = positionChange[ai.id-1];
+            var p  = positionChange[a[i]];
             ai.x += p[0];
             ai.y += p[1];
             if(getDirection(ai.next)){
@@ -274,7 +274,7 @@ function moveAgents1(a){
         var y = ai.y + ai.radius / 3;
         // set black hole node text with different color
         context.fillStyle = "#ff0000";
-        context.fillText(ai.id, x, y);
+        context.fillText(a[i] + 1, x, y);
         offset+=15;
     }
 
@@ -314,18 +314,13 @@ function checkCollision()
         if (algorithm != '3'){
           idealtime++;
         }else if (algorithm == '3' && tempMoves < moves){
-
           if (add){
             idealtime++;
           }
         //  alert(idealtime);
-
         }
         $('#idealtime').val(idealtime);
     }
-
-
-
 }
 
 function baseAgents()
