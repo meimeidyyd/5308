@@ -60,7 +60,7 @@ function Agent(p, Id, d)
         {
         //  algorithm Devide
         case "1":
-                Divide1(a);
+                Divide(a);
                 break;
 
         //  algorithm OptTime
@@ -300,7 +300,7 @@ function checkCollision()
             temp=true;
 
             agents[i].move();
-            if (algorithm == '3'){
+            if (algorithm == '3' || algorithm == '6'){
               if (agents[i].state != 4 && (agents[i].next != lastVisit)){
                   lastVisit = agents[i].next;
                   add = true;
@@ -311,9 +311,9 @@ function checkCollision()
     }
 
     if(temp){
-        if (algorithm != '3'){
+        if (algorithm != '3' && algorithm != '6'){
           idealtime++;
-        }else if (algorithm == '3' && tempMoves < moves){
+        }else if ((algorithm == '3' || algorithm == '6') && tempMoves < moves){
           if (add){
             idealtime++;
           }

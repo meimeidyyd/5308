@@ -34,7 +34,7 @@ function Divide(a)
         a.goal = left + 1 - a.id;
 
         E[a.id - 1][2 - a.id] = a.next;
-        whiteBoard(a.id, a.next, left, right);
+        whiteBoard(a, a.next, left, right);
         // check if the algorithm terminates
         if(E[a.id - 1][0] - 2 === E[a.id - 1][1] || E[a.id - 1][0] + n - 2 === E[a.id - 1][1])
         {
@@ -148,13 +148,13 @@ function TradeOff(a)
 }
 
 
-function Pairing(a)
-{
-    if (chase(a))
-    {
-       cautiousWalk(a);
-    }
-}
+// function Pairing(a)
+// {
+//     if (chase(a))
+//     {
+//        cautiousWalk(a);
+//     }
+// }
 
 
 
@@ -166,6 +166,8 @@ function Gathering(a)
     if (chase(a))
     {
        cautiousWalk(a);
+    }else if(a.state != 4){
+      moves++;
     }
 
     if (a.state === 4)
@@ -221,12 +223,12 @@ function chase(a)
         {
             a.state = 4;
         }
-        // terminate and become paired-left or alone
-        else if (algorithm === '4')
-        {
-            a.terminate = true;
-            done++;
-        }
+        // // terminate and become paired-left or alone
+        // else if (algorithm === '4')
+        // {
+        //     a.terminate = true;
+        //     done++;
+        // }
         else if (algorithm === '6')
         {
             a.state = 4;
@@ -392,8 +394,7 @@ function cautiousWalkSimple(a,forward,backward){
 
     if(a.state===1 && linkStates[backward]===1){//如果 agent的状态是：探索中 并 backwardport的状态是 探索中
         links[backward].width = 5;
-        links[backward].strokeStyle = "#00ff00";//我们就把backwardport的颜色变成绿色
-        linkStates[backward] = 2;//backwardport的状态变成 安全
+
         a.direction = -a.direction;
         a.state=-1;
 
@@ -408,6 +409,8 @@ function cautiousWalkSimple(a,forward,backward){
     // }
   if(a.state===-1){//如果 agent的状态是：临时返回
         links[forward].width = 5;
+        links[backward].strokeStyle = "#00ff00";//我们就把backwardport的颜色变成绿色
+        linkStates[backward] = 2;//backwardport的状态变成 安全
         a.state=0;
         a.direction = -a.direction;
 
@@ -493,13 +496,13 @@ function Pairing1(a){
         backward = ports[1];
     var nodeVisited=0;
     chasedAgent=[];
-
+cautiousWalkSimple(a,forward,backward);
 
 //step1:
     //1. If an agent reaches a node visited by another agent b, it becomes chasing, and follows
     //b’s trace.
     //a.state==0 说明agent a 安全的到达了当前节点（a.next）
-    for(var i=0;i<bases.length;i++){
+    for(var i=0;i<bases.length&&a.state==0;i++){
         if(i+1!=a.id){
             //如果是最开始initialize则不判断，防止id小的node的a.next已经变了之后再比较
             if(a.next==bases[a.id-1])continue;//if(a.next==bases[a.id-1]&&a.state==0)break;
@@ -529,7 +532,8 @@ function Pairing1(a){
 
         //alert(a.id+' : '+agents[a.chasing].id+' : '+lastSafeNode(a.chasing)+' : '+lastVisited[a.chasing]);
         //alert(a.id+' :chaising '+agents[chasedAgent].id +' lastsafenode: '+lastSafeNode(a.chasing)+' a.chasing.direction: '+agents[a.chasing].direction+' agents[a.chasing].state: '+agents[a.chasing].state);
-        if(a.next==lastSafeNode(a.chasing)){
+        //if(a.next==lastSafeNode(a.chasing)){ linkStates['forward']==1
+        if(linkStates[forward]==1){
         //step3
             a.joinme=true;
             a.terminate=true;
@@ -577,7 +581,7 @@ function Pairing1(a){
 
     }
 
- cautiousWalkSimple(a,forward,backward);
+
 
 
 }
@@ -646,11 +650,11 @@ function Elimination(a){
                  a.terminate=true;
                  alert('agent'+a.id+' terminates for case b after agent returns to V');
             }
-           
+
         }
     }
     else if(currentPairedBaseIndex>-1){
-        
+
         //case b:
         if(pairedBasesRound[currentPairedBaseIndex]>pairedBasesRound[currentHomeBaseIndex]){
             a.state=-2;
@@ -664,7 +668,7 @@ function Elimination(a){
             a.state=2;
             pairedBasesRound[currentPairedBaseIndex]=0;//lllllll
             a.goal=bases[a.id-1];
-            
+
         }
         // else{
         //     alert(pairedBasesRound[currentPairedBaseIndex]+' : '+pairedBasesRound[currentHomeBaseIndex]);
@@ -675,7 +679,7 @@ function Elimination(a){
 
 
     }
-   
+
     cautiousWalkSimple(a,forward,backward);
 
 
@@ -687,10 +691,10 @@ function isPairedBase(a){
    if(index==-1)return index;
    else if(a.next==bases[a.id-1]) return -1;
    else return index;
-   
+
     // for (var i = 0; i < pairedBases.length; i++) {
     //     if(pairedBases[i]==next&&pairedBases[i]!=bases[a.id-1])return i;
-        
+
     // }
     // return -1;
 

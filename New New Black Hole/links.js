@@ -138,10 +138,10 @@ function getSegments(left)
             if (algorithm === '3')
             {
                 var id = i + 3;
-                if (!i) $('#conArea').append(consoleCount + '.');
+                if (!i) $('#conArea').append(consoleCount+')\n');
                 $('#conArea').append('Agent ' + id + ' checks S' + id + ' = ' + s );
             }else{
-                var id = i ? 'U left' : consoleCount + '.' + 'U right';
+                var id = i ? 'U left' : consoleCount+')\n'  + 'U right';
                 $('#conArea').append(id + ' = ' + s );
             }
         }

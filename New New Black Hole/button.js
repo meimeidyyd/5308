@@ -124,13 +124,13 @@ function disableButtons()
 function enableButtons()
 {
     stop = true;
-    if(algorithm!='4' && algorithm!='5'){
-        agents = [];
-        k = 0;
-        enableAgents();
-
-    }
-
+    // if(algorithm!='4' && algorithm!='5'){
+    //     agents = [];
+    //     k = 0;
+    //     enableAgents();
+    //
+    // }
+    enableAgents();
     $('#start').text('Start');
     $('#random').removeAttr('disabled');
     $('#size').removeAttr('disabled');

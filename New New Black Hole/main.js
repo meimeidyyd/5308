@@ -186,7 +186,7 @@ function empty()
 function console(id, m)
 {
     var message = 0;
-    //consoleCount++;
+    consoleCount++;
     switch (m)
     {
         case 1:
@@ -211,16 +211,18 @@ function console(id, m)
             message = 'Agent ' + id +' terminates with status alone.Visited by '+chasedAgent.toString();
             break;
         case 8:
-            message = 'Agent ' + id +' leaves a mark Join me and terminates with status paired-left,lastSafeNodeForChasedAgent'+chasedAgent[0]+':'+lastVisited[chasedAgent[0]-1];
+            message = 'Agent ' + id +' leaves a mark Join me and terminates with status paired-left';
+            // ,lastSafeNodeForChasedAgent'+chasedAgent[0]+':'+lastVisited[chasedAgent[0]-1];
             break;
         case 9:
             message = 'Agent ' + id +' clears the mark and terminates with status paired-right and paired with '+chasedAgent.toString();
             break;
         case 10:
-            message = 'Agent ' + id.id +' begin to chase agent '+(id.chasing+1)+ ' lastSafeNodeForChasedAgent '+lastVisited[id.chasing];
+            message = 'Agent ' + id.id +' begin to chase agent '+(id.chasing+1);
+            // +' lastSafeNodeForChasedAgent '+lastVisited[id.chasing];
             break;
     }
-    $('#conArea').append((consoleCount++) + ')\n' + message + '.\n');
+    $('#conArea').append((consoleCount) + ')\n' + message + '.\n');
 }
 
  function printf(){
