@@ -273,6 +273,7 @@ function moveAgents1(a){
         //  draw agents
         agents[a[i]].draw(context);
         // set the text at the center of the nodes
+        if(ai.id > 9)offset+=10;
         var x = ai.x - (ai.id > 9 ? ai.radius / 1.8 : ai.radius / 3.6)+offset;
         var y = ai.y + ai.radius / 3;
         // set black hole node text with different color
