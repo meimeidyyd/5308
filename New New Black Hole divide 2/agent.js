@@ -290,7 +290,7 @@ function moveAgents1(a){
 function checkCollision()
 {
     var temp=false;
-    var currentMoves=moves;
+    var tempMoves=moves;
     var add = false;
     for (var i = 0; i < agents.length; i++)
     {
@@ -313,15 +313,13 @@ function checkCollision()
               }
             }
         }
-        
+        $('#moves').val(moves);
     }
-    if (currentMoves < moves){
-        $('#moves').val(currentMoves );
-    }
+
     if(temp){
         if (algorithm != '3' && algorithm != '6'){
           idealtime++;
-        }else if ((algorithm == '3' || algorithm == '6') && currentMoves < moves){
+        }else if ((algorithm == '3' || algorithm == '6') && tempMoves < moves){
           if (add){
             idealtime++;
           }

@@ -131,7 +131,6 @@ function enableButtons()
     //
     // }
     enableAgents();
-    $('#moves').val(moves);
     $('#start').text('Start');
     $('#random').removeAttr('disabled');
     $('#size').removeAttr('disabled');

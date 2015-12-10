@@ -1,6 +1,5 @@
 <html>
 <head>
-    <!-- <link rel="stylesheet" type="text/css" href="style/bootstrap.css" /> -->
     <link rel="stylesheet" type="text/css" href="style/style.css" />
     <script src="src/jquery/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="button.js"></script>
@@ -35,19 +34,19 @@
                         <tr>
                             <td>
                             <label for="size">size&nbsp;</label>
-                            <input class="bar" type="range" id="size" value="50"/>
+                            <input class="bar" type="range" id="size" value="50"/> +
                             </td>
                         </tr>
                         <tr>
                             <td>
                             <button id="draw" class="buttons">Draw</button>
-                            <!-- <button id="wCase" class="buttons">Worst Case</button> -->
+                            <button id="wCase" class="buttons">Worst Case</button>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div id="setAgents">
-                    <div class="title" style="width:80px">
+                    <div class="title" style="width:80">
                         &nbsp;Agents
                     </div>
                     <table>
@@ -75,7 +74,7 @@
 
                     </div>
                     <table>
-                        <tr >
+                        <tr style="height:42">
                             <td>
                                 Algorithm&nbsp;&nbsp;
                                 <select id="selectAlgorithm">
@@ -115,9 +114,6 @@
                 </div>
             </div>
         </div>
-        <footer id='footer'>
-            Implemented By Sifeng Chen, Xinyu Liu 2015
-        </footer>
 	</body>
    <script>
         var n           =  24;

@@ -151,7 +151,6 @@ function refreshFrame ()
     if (done == k)
     {
         enableButtons();
-        
         return;
     }
     if (stop)

@@ -125,10 +125,22 @@ function TradeOff(a)
                 a.report = true;
                 done = k - 1;
                 a.direction = -a.direction;
-                return;
             }
             unexplored = right ? (right - left - 1) : (n - left - 1);
             getSegments(left);
+            // alert(1);
+            // // get link states
+            // var getlinks = getLinks(a);
+            // var linkForward = getlinks[0];
+            // var forward = linkStates[linkForward];
+            // alert(forward);
+            // if (forward != 2)
+            // {
+            //     alert(1);
+            //     notify(a, 0);
+            //     a.direction = -a.direction;
+            //     a.stage++;
+            // }
         }
         // have checked the left side
         if (a.stage === 1 )
@@ -149,6 +161,19 @@ function TradeOff(a)
        }
     }
 }
+
+
+// function Pairing(a)
+// {
+//     if (chase(a))
+//     {
+//        cautiousWalk(a);
+//     }
+// }
+
+
+
+
 
 
 function Gathering(a)
@@ -367,13 +392,13 @@ function notify(a, t)
             }
             agents[i].stage = 1;
             agents[i].state = 3;
-            // var left    = S[agents[i].id - 3][0];
-            // var right   = S[agents[i].id - 3][1];
-            // if (left + 2 === right || left + 2 === n)
-            // {
-            //     agents[i].report = true;
-            //     done = k - 1;
-            // }
+            var left    = S[agents[i].id - 3][0];
+            var right   = S[agents[i].id - 3][1];
+            if (left + 2 === right || left + 2 === n)
+            {
+                agents[i].report = true;
+                done = k - 1;
+            }
         }
     }
     console(a, 6);
@@ -530,10 +555,10 @@ cautiousWalkSimple(a,forward,backward);
 
     if(nodeVisited===1){
         //step1 continued
-        if(a.chasing==-1){
-            console(a,10);
-        }
-        a.chasing=chasedAgent[0]-1;
+        //if(a.chasing==-1){
+            a.chasing=chasedAgent[0]-1;
+
+            //}
 
         //alert(a.id+' : '+agents[a.chasing].id+' : '+lastSafeNode(a.chasing)+' : '+lastVisited[a.chasing]);
         //alert(a.id+' :chaising '+agents[chasedAgent].id +' lastsafenode: '+lastSafeNode(a.chasing)+' a.chasing.direction: '+agents[a.chasing].direction+' agents[a.chasing].state: '+agents[a.chasing].state);
@@ -550,7 +575,7 @@ cautiousWalkSimple(a,forward,backward);
 
             return;
         }
-
+        console(a,10);
     }
 
 
@@ -591,21 +616,21 @@ cautiousWalkSimple(a,forward,backward);
 
 }
 
-//
+
 // function lastSafeNode(id){
 //   return lastVisited[id];
 // }
 
-function lastSafeNode(chase){
-    a=agents[chase];
-    if(a.vanish) lastVisited[chase]=blackHole-1<0 ? n-1 : blackHole-1;
-    else if(a.terminate) lastVisited[chase]=a.next;
-    else if(a.state==-1)lastVisited[chase]=a.next+1==n ? 0 : a.next+1;
-    else if(a.state==0)lastVisited[chase]=a.next;
-    else if(a.state==1)lastVisited[chase]=a.next-1<0 ? n-1 : a.next-1;
-    else lastVisited[chase]=a.next;
-    return lastVisited[chase];
-}
+// function lastSafeNode(chase){
+//     a=agents[chase];
+//     if(a.vanish) lastVisited[chase]=blackHole-1<0 ? n-1 : blackHole-1;
+//     else if(a.terminate) lastVisited[chase]=a.next;
+//     else if(a.state==-1)lastVisited[chase]=a.next+1==n ? 0 : a.next+1;
+//     else if(a.state==0)lastVisited[chase]=a.next;
+//     else if(a.state==1)lastVisited[chase]=a.next-1<0 ? n-1 : a.next-1;
+//     else lastVisited[chase]=a.next;
+//     return lastVisited[chase];
+// }
 
 
 function Elimination(a){
