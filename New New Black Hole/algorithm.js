@@ -86,7 +86,9 @@ function TradeOff(a)
         done++;
         return;
     }
-
+    if (a.report){
+        return;
+    }
     // notify agents at the right side
     if (a.state === 4 && a.stage === 3)
     {
@@ -122,10 +124,23 @@ function TradeOff(a)
             {
                 a.report = true;
                 done = k - 1;
-                a.goal = 0;
+                a.direction = -a.direction;
             }
             unexplored = right ? (right - left - 1) : (n - left - 1);
             getSegments(left);
+            // alert(1);
+            // // get link states
+            // var getlinks = getLinks(a);
+            // var linkForward = getlinks[0];
+            // var forward = linkStates[linkForward];
+            // alert(forward);
+            // if (forward != 2)
+            // {
+            //     alert(1);
+            //     notify(a, 0);
+            //     a.direction = -a.direction;
+            //     a.stage++;
+            // }
         }
         // have checked the left side
         if (a.stage === 1 )
@@ -217,11 +232,13 @@ function chase(a)
 
 
     // stop chasing when the link is not safe
-    if (a.state === 3 && forward === 1)
+    if (a.state === 3 && forward != 2)
     {
-        if (algorithm === '3')
+        if (algorithm == '3')
         {
             a.state = 4;
+            // notify agents at the right side
+
         }
         // // terminate and become paired-left or alone
         // else if (algorithm === '4')
@@ -349,17 +366,23 @@ function notify(a, t)
 {
     for (var i = 2; i < k; i++)
     {
+      // notify at the right side
         if (!t && i === a.id - 1)
         {
             continue;
         }
         if (agents[i].next === a.next && i - 2 < S.length)
         {
+          // left side goal
             var g = S[i - 2];
             if (g[0] != -1)
             {
+                //  update the goal
                 agents[i].goal = g[0];
-                if (g[0] <= a.next && (g[1] >= a.next || g[1] === n ))
+                if (i === a.id - 1){
+                    agents[i].direction = -agents[i].direction;
+                }
+                else if (g[0] <= a.next && (g[1] >= a.next || g[1] === n ))
                 {
                     agents[i].direction = -agents[i].direction;
                 }else{
@@ -369,6 +392,13 @@ function notify(a, t)
             }
             agents[i].stage = 1;
             agents[i].state = 3;
+            var left    = S[agents[i].id - 3][0];
+            var right   = S[agents[i].id - 3][1];
+            if (left + 2 === right || left + 2 === n)
+            {
+                agents[i].report = true;
+                done = k - 1;
+            }
         }
     }
     console(a, 6);
@@ -591,16 +621,16 @@ cautiousWalkSimple(a,forward,backward);
 //   return lastVisited[id];
 // }
 
-function lastSafeNode(chase){
-    a=agents[chase];
-    if(a.vanish) lastVisited[chase]=blackHole-1<0 ? n-1 : blackHole-1;
-    else if(a.terminate) lastVisited[chase]=a.next;
-    else if(a.state==-1)lastVisited[chase]=a.next+1==n ? 0 : a.next+1;
-    else if(a.state==0)lastVisited[chase]=a.next;
-    else if(a.state==1)lastVisited[chase]=a.next-1<0 ? n-1 : a.next-1;
-    else lastVisited[chase]=a.next;
-    return lastVisited[chase];
-}
+// function lastSafeNode(chase){
+//     a=agents[chase];
+//     if(a.vanish) lastVisited[chase]=blackHole-1<0 ? n-1 : blackHole-1;
+//     else if(a.terminate) lastVisited[chase]=a.next;
+//     else if(a.state==-1)lastVisited[chase]=a.next+1==n ? 0 : a.next+1;
+//     else if(a.state==0)lastVisited[chase]=a.next;
+//     else if(a.state==1)lastVisited[chase]=a.next-1<0 ? n-1 : a.next-1;
+//     else lastVisited[chase]=a.next;
+//     return lastVisited[chase];
+// }
 
 
 function Elimination(a){
