@@ -31,6 +31,7 @@ function Agent(p, Id, d)
    this.draw = function ()
     {
         if(algorithm==3 && this.id<=2){
+            playerImage = new Image();
             playerImage.src='redshell_r.png';
             // context.fillStyle = this.fillStyle;
             // context.beginPath();
@@ -40,6 +41,7 @@ function Agent(p, Id, d)
             context.drawImage(playerImage,0, 0, this.width, this.height, this.x-25, this.y-25,this.height, this.width, this.height);
         }
         else{
+            playerImage = new Image();
             playerImage.src = 'Mario.png';
             context.drawImage(playerImage, this.imageX, this.imageY, this.width, this.height, this.x-25, this.y-25,this.height, this.width, this.height);
         }
