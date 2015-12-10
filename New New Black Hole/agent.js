@@ -31,14 +31,17 @@ function Agent(p, Id, d)
    this.draw = function ()
     {
         if(algorithm==3 && this.id<=2){
-            context.fillStyle = this.fillStyle;
-            context.beginPath();
-            context.arc(this.x, this.y, this.radius,  0, 2 * Math.PI, true);
-            context.closePath();
-            context.fill();
+            playerImage.src='redshell_r.png';
+            // context.fillStyle = this.fillStyle;
+            // context.beginPath();
+            // context.arc(this.x, this.y, this.radius,  0, 2 * Math.PI, true);
+            // context.closePath();
+            // context.fill();
+            context.drawImage(playerImage,0, 0, this.width, this.height, this.x-25, this.y-25,this.height, this.width, this.height);
         }
         else{
-    context.drawImage(playerImage, this.imageX, this.imageY, this.width, this.height, this.x-25, this.y-25,this.height, this.width, this.height);
+            playerImage.src = 'Mario.png';
+            context.drawImage(playerImage, this.imageX, this.imageY, this.width, this.height, this.x-25, this.y-25,this.height, this.width, this.height);
         }
     }
 
