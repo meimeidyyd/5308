@@ -1,8 +1,0 @@
-Update
-
-1.Replace icon of Exploring agents'.
-
-2.Optimize the notify function in algorithm TradeOff.
-(Agent that notifies was possible to move in a wrong direction in special cases.)
-
-3.Prevent agents from doing extra notification after the black hole is found.
