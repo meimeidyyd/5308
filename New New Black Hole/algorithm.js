@@ -124,6 +124,11 @@ function TradeOff(a)
             {
                 a.report = true;
                 done = k - 1;
+                if (!a.next){
+                  a.terminate = true;
+                  console(a.id, 2);
+                  done++;
+                }
                 a.direction = -a.direction;
                 return;
             }
@@ -339,30 +344,50 @@ function cautiousWalk(a)
 
 function notify(a, t)
 {
+    var current = a.next;
     for (var i = 2; i < k; i++)
     {
       // notify at the right side
-        if (!t && i === a.id - 1)
+        if (!t && i === a.id - 1 || agents[i].report)
         {
             continue;
         }
-        if (agents[i].next === a.next && i - 2 < S.length)
+        if (agents[i].next === current && i - 2 < S.length)
         {
           // left side goal
             var g = S[i - 2];
+
             if (g[0] != -1)
             {
                 //  update the goal
                 agents[i].goal = g[0];
-                if (i === a.id - 1){
-                    agents[i].direction = -agents[i].direction;
-                }
-                else if (g[0] <= a.next && (g[1] >= a.next || g[1] === n ))
+                // current <= left
+                if (current >= g[0] && (g[1] >= current || g[1] === 0 ))
                 {
-                    agents[i].direction = -agents[i].direction;
+                  if (current < blackHole)
+                  {
+                      agents[i].direction = -1;
+                  }else if (current > blackHole){
+                      agents[i].direction = 1;
+                  }
+                }else if (current < g[0]){
+                  agents[i].direction = 1;
+                }else if (current > g[1]){
+                  agents[i].direction = 1;
                 }else{
-                    agents[i].direction = 1;
+
                 }
+
+
+                // if (i === a.id - 1){
+                //     agents[i].direction = -agents[i].direction;
+                // }
+                // else if (g[0] <= a.next && (g[1] >= a.next || g[1] === n ))
+                // {
+                //     agents[i].direction = -agents[i].direction;
+                // }else{
+                //     agents[i].direction = 1;
+                // }
 
             }
             agents[i].stage = 1;
